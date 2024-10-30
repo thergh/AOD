@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/DFS.dir/src/DFS.cpp.o CMakeFiles/DFS.dir/src/graph_alg.cpp.o -o DFS 

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/SCC.dir/src/SCC.cpp.o CMakeFiles/SCC.dir/src/graph_alg.cpp.o -o SCC 
