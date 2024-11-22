@@ -93,3 +93,25 @@ std::vector<size_t> Graph::ss_from_file(std::string ss_path){
     }   
     return ss_vector;
 }
+
+
+std::vector<std::pair<size_t, size_t>> Graph::p2p_from_file(std::string p2p_path){
+    std::vector<std::pair<size_t, size_t>> p2p_vector(0);
+    std::ifstream input(p2p_path);
+    std::string line;
+
+    while(std::getline(input, line)){
+        if(line[0] == 'q'){
+            // std::cout << line << "\n";
+            std::vector<std::string> words;
+            std::string word;
+            std::istringstream ss(line);
+
+            while(ss >> word){
+                words.push_back(word);
+            }
+            p2p_vector.push_back(std::make_pair(stoul(words[1]), stoul(words[2])));
+        }
+    }   
+    return p2p_vector;    
+}
