@@ -79,8 +79,9 @@ std::vector<size_t> Graph::ss_from_file(std::string ss_path){
     std::string line;
 
     while(std::getline(input, line)){
-        std::cout << line << "\n";
+        
         if(line[0] == 's'){
+            std::cout << line << "\n";
             std::vector<std::string> words;
             std::string word;
             std::istringstream ss(line);
