@@ -44,6 +44,11 @@ class Graph{
          */
         std::vector<size_t> ss_from_file(std::string ss_path);
 
+        /**
+         * Parses a text file to create a list of pairs of vertices
+         * between which we will find the shortest path
+         */
+        std::vector<std::pair<size_t, size_t>> p2p_from_file(std::string p2p_path);
 
 };
 
