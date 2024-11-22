@@ -10,8 +10,8 @@ Graph::Graph(std::string input_path){
     std::ifstream input(input_path);
     std::string line;
 
-    // DEBUG
-    this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(10);
+    // // DEBUG
+    // this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(10);
     
     while(std::getline(input, line)){
         // std::cout << line << "\n";
@@ -27,9 +27,9 @@ Graph::Graph(std::string input_path){
                 words.push_back(word);
             }
             this->V = stoul(words[2]);
-            std::cout << "V: " << words[2] << "\n";
+            // std::cout << "V: " << words[2] << "\n";
             this->E = stoul(words[3]);
-            std::cout << "E: " << E << "\n";
+            // std::cout << "E: " << E << "\n";
             this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(this->V);       
         }
         else if(line[0] == 'a'){
@@ -48,6 +48,7 @@ Graph::Graph(std::string input_path){
 }
 
 
+
 Graph::Graph(size_t V){
     this->V = V;
     this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(V);
@@ -62,11 +63,32 @@ void Graph::add_edge(size_t a, size_t b, int weight){
 void Graph::print_graph(){
     // increasing by one to make vertices start from1 instead of 0,
     // to match vector convention
-    for(int i=0; i<this->adjacency_list.size(); i++){
+    for(size_t i=0; i<this->adjacency_list.size(); i++){
         std::cout << i + 1 << ":\t";
-        for(int j=0; j<this->adjacency_list[i].size(); j++){
+        for(size_t j=0; j<this->adjacency_list[i].size(); j++){
             std::cout << "(" << adjacency_list[i][j].first + 1 << ", " << adjacency_list[i][j].second<< "), ";
         }
         std::cout << "\n";
     }
+}
+
+
+std::vector<size_t> Graph::ss_from_file(std::string ss_path){
+    std::vector<size_t> ss_vector(0);
+    std::ifstream input(ss_path);
+    std::string line;
+
+    while(std::getline(input, line)){
+        std::cout << line << "\n";
+        if(line[0] == 's'){
+            std::vector<std::string> words;
+            std::string word;
+            std::istringstream ss(line);
+            while(ss >> word){
+                words.push_back(word);
+            }
+            ss_vector.push_back(stoul(words[1]));
+        }
+    }   
+    return ss_vector;
 }
