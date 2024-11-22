@@ -3,14 +3,16 @@ SRC_DIR = src
 BUILD_DIR = build
 EXECUTABLE = $(BUILD_DIR)/program
 CXX = g++
-CXXFLAGS = -O2 -Wall -std=c++17
-SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+CXXFLAGS = -O2 -Wall -std=c++20
+# SRC_FILES = $(SRC_DIR)/algo.cpp $(SRC_DIR)/main.cpp
+SRC_FILES = $(SRC_DIR)/algo.cpp $(SRC_DIR)/main-test.cpp
+HEADERS = $(SRC_DIR)/algo.hpp
 
 # Default target
 all: $(EXECUTABLE)
 
 # Build target
-$(EXECUTABLE): $(SRC_FILES)
+$(EXECUTABLE): $(SRC_FILES) $(HEADERS)
 	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) $(SRC_FILES) -o $(EXECUTABLE)
 
