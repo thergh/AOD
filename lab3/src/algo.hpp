@@ -19,19 +19,19 @@ class Graph{
         
         size_t V; /* Number of vertices */
         size_t E; /* Nmber of edges */
-        int max_weight; /* Highest weight of all edges */
+        size_t max_weight; /* Highest weight of all edges */
 
         /**
          * Adjacency list representing a graph.
          * Edges and weights are stored in form of a pair (vertex, weight)
          */ 
-        std::vector<std::vector<std::pair<size_t, int>>> adjacency_list;
+        std::vector<std::vector<std::pair<size_t, size_t>>> adjacency_list;
 
         /**
          * Ads an edge to the adjacency list
          * with a weight
          */
-        void add_edge(size_t a, size_t b, int weight);
+        void add_edge(size_t a, size_t b, size_t weight);
 
         /**
          * Neatly prints the adjacency list
@@ -50,7 +50,11 @@ class Graph{
          */
         std::vector<std::pair<size_t, size_t>> p2p_from_file(std::string p2p_path);
 
-
+        /**
+         * Finds shortest paths between source and all other nodes
+         * Assumes that:
+         *      - wieghts have integer, non-negative values
+         */
         std::vector<size_t> dijkstra(size_t source);
 
         std::vector<size_t> dial(size_t source);

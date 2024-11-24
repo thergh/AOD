@@ -11,7 +11,7 @@ Graph::Graph(std::string input_path){
     std::string line;
 
     // // DEBUG
-    // this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(10);
+    // this->adjacency_list = std::vector<std::vector<std::pair<size_t, size_t>>>(10);
     
     while(std::getline(input, line)){
         // std::cout << line << "\n";
@@ -30,7 +30,7 @@ Graph::Graph(std::string input_path){
             // std::cout << "V: " << words[2] << "\n";
             this->E = stoul(words[3]);
             // std::cout << "E: " << E << "\n";
-            this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(this->V);       
+            this->adjacency_list = std::vector<std::vector<std::pair<size_t, size_t>>>(this->V);       
         }
         else if(line[0] == 'a'){
             std::vector<std::string> words;
@@ -51,11 +51,11 @@ Graph::Graph(std::string input_path){
 
 Graph::Graph(size_t V){
     this->V = V;
-    this->adjacency_list = std::vector<std::vector<std::pair<size_t, int>>>(V);
+    this->adjacency_list = std::vector<std::vector<std::pair<size_t, size_t>>>(V);
 }
 
 
-void Graph::add_edge(size_t a, size_t b, int weight){
+void Graph::add_edge(size_t a, size_t b, size_t weight){
     this->adjacency_list[a].push_back(std::make_pair(b, weight));
 }
 
@@ -115,3 +115,12 @@ std::vector<std::pair<size_t, size_t>> Graph::p2p_from_file(std::string p2p_path
     }   
     return p2p_vector;    
 }
+
+
+std::vector<size_t> Graph::dijkstra(size_t source){}
+
+
+std::vector<size_t> Graph::dial(size_t source){}
+
+
+std::vector<size_t> Graph::radixheap(size_t source){}
