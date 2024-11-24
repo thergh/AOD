@@ -50,6 +50,12 @@ class Graph{
          */
         std::vector<std::pair<size_t, size_t>> p2p_from_file(std::string p2p_path);
 
+
+        std::vector<size_t> dijkstra(size_t source);
+
+        std::vector<size_t> dial(size_t source);
+
+        std::vector<size_t> radixheap(size_t source);
 };
 
 #endif /* SRC_ALGO_INCLUDED */ 
