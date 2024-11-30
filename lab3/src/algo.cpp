@@ -124,16 +124,14 @@ std::vector<int> Graph::dijkstra(int source){
     public:
         int index; // index in adj. tree
         int current_d; // current shortest distance
-        int final_d; // final shortest distance
 
         void print_node(){
-            std::cout << "(" << index << ", " << current_d << ", " << final_d << ")" << "\n";
+            std::cout << "(" << index << ", " << current_d << ")" << "\n";
         }
 
-        node(int index, int current_d, int final_d){
+        node(int index, int current_d){
             this->index = index;
             this->current_d = current_d;
-            this->final_d = final_d;
         }
 
         // overloading < to use in min heap (priority queue)
@@ -143,29 +141,51 @@ std::vector<int> Graph::dijkstra(int source){
         }
     };
 
-    // vector of vertices with final distances
-    // empty at the beggining
-    std::vector<int> S;
+    int size = this->adjacency_list.size(); // vertex count
 
-    // for each node it must know:
-    // its index
-    // its current shortest distance
-    // its final shortest distance??
-    std::priority_queue<node> Q;
+    int max_int = std::numeric_limits<int>::max();
 
-    // initializing Q from adj. list
-    for(int i=0; i<int(this->adjacency_list.size()); i++){
-        // setting current 
-        int max_int = std::numeric_limits<int>::max();
-        // initializing distance as max_int
-        node new_node = node(i, max_int - i, max_int);
-        new_node.print_node();
+    std::priority_queue<node> Q; // min heap based priority queue
+
+    std::vector<int> distances(size, max_int); // shortest known distances to vertices
+
+    // initializing Q and distances from adj. list
+    for(int i=0; i<size; i++){
+        // initializing current distance as max_int
+        node new_node = node(i, max_int);
+        distances[i] = max_int;
+        // new_node.print_node();
         Q.push(new_node);
     }
-    // std::cout << "min node: " << Q.top().index << std::endl;
 
-    // TODO: DEBUG!!! TEMP!!!
-    return S;
+    // push the source node with distance 0
+    distances[source] = 0;
+    Q.push(node(source, 0));
+
+    while(!Q.empty()){
+        node u = Q.top();
+        Q.pop();
+
+        // ignoring stale nodes that are created because instead
+        // of implementing decrease_key() we apply the "Lazy Update" technique
+        // that leaves redundant nodes in the queue
+        if(u.current_d > distances[u.index]){
+            continue;
+        }
+
+        for(const auto& v : adjacency_list[u.index]){
+            int v_index = v.first;
+            int v_weight = v.second;
+
+            // updating distance and adding new node to Q if it's shorter
+            if(distances[u.index] + v_weight < distances[v_index]){
+                distances[v_index] = distances[u.index] + v_weight;
+                Q.push(node(v_index, distances[v_index]));
+            }
+        }
+    }
+
+    return distances;
 }
 
 
