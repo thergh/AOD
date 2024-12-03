@@ -17,11 +17,14 @@ void print_vector(std::vector<int> v){
 
 
 int main(){
-    std::string graph_file = "data/Long-C.0.0.gr";
-    // std::string graph_file = "data/plik_z_danymi.gr";
+    // std::string graph_file = "data/Long-C.0.0.gr";
+    std::string graph_file = "data/plik_z_danymi.gr";
     Graph* g = new Graph(graph_file);
     // g->print_graph();
     // g->p2p_from_file("data/pary.p2p");
-    auto distances = g->dijkstra(0);
-    print_vector(distances);
+    auto distances1 = g->dijkstra(0);
+    print_vector(distances1);
+    // g->dijkstra(0);
+    auto distances2 = g->dial(0);
+    print_vector(distances2);
 }

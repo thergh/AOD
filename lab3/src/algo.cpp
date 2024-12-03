@@ -4,6 +4,7 @@
 #include <string>
 #include <queue>
 #include <limits>
+#include <list>
 
 #include "algo.hpp"
 
@@ -11,6 +12,8 @@
 Graph::Graph(std::string input_path){
     std::ifstream input(input_path);
     std::string line;
+
+    this->max_weight = 0;
 
     // // DEBUG
     // this->adjacency_list = std::vector<std::vector<std::pair<int, int>>>(10);
@@ -42,7 +45,13 @@ Graph::Graph(std::string input_path){
                 words.push_back(word);
             }
             // decerasing by one to make vertices start from 0 instead of 1, to match vector convention
+
             add_edge(stoul(words[1]) - 1, stoul(words[2]) - 1, stoul(words[3]));
+
+            // calculating max weight
+            if(stoi(words[3]) > this->max_weight){
+                this->max_weight = stoi(words[3]);
+            }
         }
         
     }
@@ -120,7 +129,8 @@ std::vector<std::pair<int, int>> Graph::p2p_from_file(std::string p2p_path){
 
 
 std::vector<int> Graph::dijkstra(int source){
-    class node{
+    // algorithm implemented following Cormen's pseudocode
+    class Node{
     public:
         int index; // index in adj. tree
         int current_d; // current shortest distance
@@ -129,30 +139,27 @@ std::vector<int> Graph::dijkstra(int source){
             std::cout << "(" << index << ", " << current_d << ")" << "\n";
         }
 
-        node(int index, int current_d){
+        Node(int index, int current_d){
             this->index = index;
             this->current_d = current_d;
         }
 
         // overloading < to use in min heap (priority queue)
-        bool operator<(const node& other_node) const{
+        bool operator<(const Node& other_node) const{
             // using ">" to create a min heap
             return current_d > other_node.current_d;
         }
     };
 
     int size = this->adjacency_list.size(); // vertex count
-
     int max_int = std::numeric_limits<int>::max();
-
-    std::priority_queue<node> Q; // min heap based priority queue
-
+    std::priority_queue<Node> Q; // min heap based priority queue
     std::vector<int> distances(size, max_int); // shortest known distances to vertices
 
     // initializing Q and distances from adj. list
     for(int i=0; i<size; i++){
         // initializing current distance as max_int
-        node new_node = node(i, max_int);
+        Node new_node = Node(i, max_int);
         distances[i] = max_int;
         // new_node.print_node();
         Q.push(new_node);
@@ -160,10 +167,10 @@ std::vector<int> Graph::dijkstra(int source){
 
     // push the source node with distance 0
     distances[source] = 0;
-    Q.push(node(source, 0));
+    Q.push(Node(source, 0));
 
     while(!Q.empty()){
-        node u = Q.top();
+        Node u = Q.top();
         Q.pop();
 
         // ignoring stale nodes that are created because instead
@@ -180,7 +187,7 @@ std::vector<int> Graph::dijkstra(int source){
             // updating distance and adding new node to Q if it's shorter
             if(distances[u.index] + v_weight < distances[v_index]){
                 distances[v_index] = distances[u.index] + v_weight;
-                Q.push(node(v_index, distances[v_index]));
+                Q.push(Node(v_index, distances[v_index]));
             }
         }
     }
@@ -189,7 +196,59 @@ std::vector<int> Graph::dijkstra(int source){
 }
 
 
-// std::vector<int> Graph::dial(int source){}
+std::vector<int> Graph::dial(int source){
+
+    int size = this->adjacency_list.size();
+    const int MAX_INT = std::numeric_limits<int>::max();
+    const int MAX_DIST = this->max_weight;
+
+    // iterator to have access to elements in old buckets
+    std::vector<int> dist(size, std::numeric_limits<int>::max());
+    std::vector<std::list<int>> buckets(MAX_DIST + 1);
+
+    dist[source] = 0;
+    buckets[0].push_back(source);
+
+    int bucket_index = 0;
+
+    while(bucket_index <= MAX_DIST){
+        
+        // lookign for the first non-empty bucket
+        while(bucket_index <= MAX_DIST && buckets[bucket_index].empty()){
+            bucket_index++;
+        }
+
+        if(bucket_index > MAX_DIST){
+            break;
+        }
+
+        // iterate over all nodes in the current bucket
+        while(!buckets[bucket_index].empty()){
+            int u = buckets[bucket_index].front();
+            buckets[bucket_index].pop_front();
+
+            // iterate over adjacent nodes
+            for(const auto& edge : adjacency_list[u]){
+                int v = edge.first;
+                int v_dist = edge.second;
+
+                // update distance
+                if(dist[u] + v_dist < dist[v]){
+                    if(dist[v] != MAX_INT){
+                        buckets[dist[v] % (MAX_DIST + 1)].remove(v);
+                    }
+
+                    dist[v] = dist[u] + v_dist;
+                    buckets[dist[v] % (MAX_DIST + 1)].push_back(v);
+                }
+            }
+        }
+    }
+
+    return dist;
+}
+
+
 
 
 // std::vector<int> Graph::radixheap(int source){}
