@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <queue>
@@ -90,7 +91,7 @@ void Graph::print_graph(){
 
 
 std::vector<int> Graph::ss_from_file(std::string ss_path){
-    std::vector<int> ss_vector(0);
+    std::vector<int> ss_vector;
     std::ifstream input(ss_path);
     std::string line;
 
@@ -130,6 +131,45 @@ std::vector<std::pair<int, int>> Graph::p2p_from_file(std::string p2p_path){
         }
     }   
     return p2p_vector;    
+}
+
+
+void Graph::ss_result(int V, int E, std::pair<int, int> range, float avg_time,
+                    std::string data_path, std::string ss_path, std::string result_path){
+    std::ofstream file;
+    file.open(result_path);
+    file << "c wyniki dla danych:\n";
+    file << "f " << data_path << " " << ss_path << std::endl;
+    file << "c\n";
+    file << "c V\tE\tmin\tmax\n";
+    file << "g " << V << "\t" << E << "\t" << range.first << "\t" << range.second << "\t" << std::endl;
+    file << "c\n";
+    file << "c sredni czas wykonania:\n";
+    file << "t " << avg_time << std::endl;
+    file.close();
+}
+
+
+void Graph::p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dists,
+                    std::pair<int, int> range, float avg_time,
+                    std::string data_path, std::string p2p_path, std::string result_path){
+    std::ofstream file;
+    file.open(result_path);
+    file << "c wyniki dla danych:\n";
+    file << "f " << data_path << " " << p2p_path << std::endl;
+    file << "c\n";
+    file << "c V\tE\tmin\tmax\n";
+    file << "g " << V << "\t" << E << "\t" << range.first << "\t" << range.second << "\t" << std::endl;
+    file << "c\n";
+    file << "c dlugosc najkrotszych sciezek:\n";
+    file << "c u\tv\tdlugosc\n";
+    for(const auto& d : dists){
+        file << "d " << std::get<0>(d) << "\t"<< std::get<1>(d) << "\t"<< std::get<2>(d) << "\n";
+    }
+    file << "c\n";
+    file << "c sredni czas wykonania:\n";
+    file << "t " << avg_time << std::endl;
+    file.close();
 }
 
 
@@ -298,6 +338,10 @@ std::vector<int> Graph::radixheap(int source){
     // }
     // std::cout << in_range(20, ranges.back());
 
+    // while(true){ // we escape if last bucket is empty
+
+
+    // }
     return dist;
 
 }

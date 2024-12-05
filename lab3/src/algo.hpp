@@ -52,6 +52,13 @@ class Graph{
          */
         std::vector<std::pair<int, int>> p2p_from_file(std::string p2p_path);
 
+        void ss_result(int V, int E, std::pair<int, int> range, float avg_time,
+                    std::string data_path, std::string ss_path, std::string result_path);
+
+        void p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dists,
+                    std::pair<int, int> range, float avg_time,
+                    std::string data_path, std::string p2p_path, std::string result_path);
+
         /**
          * @brief Finds shortest paths between source and all other nodes
          * 
