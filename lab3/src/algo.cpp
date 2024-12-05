@@ -266,6 +266,9 @@ void redistribute(){
 }
 
 
+bool in_range(int x, std::pair<int, int> p){
+    return (x >= p.first && x <= p.second);
+}
 
 
 std::vector<int> Graph::radixheap(int source){
@@ -290,9 +293,10 @@ std::vector<int> Graph::radixheap(int source){
         ranges[i] = {std::pow(2, i - 1), std::pow(2, i) - 1};
     }
 
-    for(auto r : ranges){
-        std::cout << "(" << r.first << ", " << r.second << ")\n";
-    }
+    // for(auto r : ranges){ // printing bucket ranges
+    //     std::cout << "(" << r.first << ", " << r.second << ")\n";
+    // }
+    // std::cout << in_range(20, ranges.back());
 
     return dist;
 
