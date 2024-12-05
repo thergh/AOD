@@ -7,6 +7,8 @@
 #include <list>
 #include <cmath>
 #include <algorithm>
+#include <functional>
+#include <utility>
 
 
 #include "algo.hpp"
@@ -270,16 +272,27 @@ std::vector<int> Graph::radixheap(int source){
     const int SIZE = this->adjacency_list.size();
     const int MAX_INT = std::numeric_limits<int>::max();
     const int MAX_DIST = this->max_weight;
-    const int K = 1 + SIZE * MAX_DIST;
+    const int K = SIZE * MAX_DIST;
+    const int BUCKET_NUMBER = log2(K); // maybe add 1?
 
     std::vector<int> dist(SIZE);
-    std::vector<std::list<int>> buckets(log2(K)); // maybe MAX_DIST + 1??
-    std::vector<std::list<std::pair<int, int>>> ranges(log2(K));
+    std::vector<std::list<int>> buckets(BUCKET_NUMBER); // maybe MAX_DIST + 1??
+    std::vector<std::pair<int, int>> ranges(BUCKET_NUMBER);
     std::cout << "MAX_DIST: " << MAX_DIST << "\n";
     std::cout << "bucket size: " << buckets.size() << "\n";
 
     dist[source] = 0;
-    buckets[0].push_back(source);
+    // buckets[0].push_back(source);
+
+    // init ranges
+    ranges[0] = {1, 1};
+    for(int i=1; i<BUCKET_NUMBER; i++){
+        ranges[i] = {std::pow(2, i - 1), std::pow(2, i) - 1};
+    }
+
+    for(auto r : ranges){
+        std::cout << "(" << r.first << ", " << r.second << ")\n";
+    }
 
     return dist;
 
