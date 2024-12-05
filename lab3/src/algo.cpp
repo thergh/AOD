@@ -5,6 +5,9 @@
 #include <queue>
 #include <limits>
 #include <list>
+#include <cmath>
+#include <algorithm>
+
 
 #include "algo.hpp"
 
@@ -251,4 +254,33 @@ std::vector<int> Graph::dial(int source){
 
 
 
-// std::vector<int> Graph::radixheap(int source){}
+void find_nonempty(){
+    return;
+}
+
+
+void redistribute(){
+
+}
+
+
+
+
+std::vector<int> Graph::radixheap(int source){
+    const int SIZE = this->adjacency_list.size();
+    const int MAX_INT = std::numeric_limits<int>::max();
+    const int MAX_DIST = this->max_weight;
+    const int K = 1 + SIZE * MAX_DIST;
+
+    std::vector<int> dist(SIZE);
+    std::vector<std::list<int>> buckets(log2(K)); // maybe MAX_DIST + 1??
+    std::vector<std::list<std::pair<int, int>>> ranges(log2(K));
+    std::cout << "MAX_DIST: " << MAX_DIST << "\n";
+    std::cout << "bucket size: " << buckets.size() << "\n";
+
+    dist[source] = 0;
+    buckets[0].push_back(source);
+
+    return dist;
+
+}
