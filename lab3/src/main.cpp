@@ -17,13 +17,7 @@
 
 #include "algo.hpp"
 
-void print_vector(std::vector<int> v){
-    std::cout << "[ ";
-    for(auto x : v){
-        std::cout << x << " ";
-    }
-    std::cout << "]\n";
-}
+void print_vector(std::vector<int> v);
 
 
 
@@ -99,7 +93,7 @@ int main(int argc, char *argv[]){
     }
 
     // Setting algorithm
-    Algorithm alg;
+    Algorithm alg = DIJKSTRA;
     if(std::string(argv[1]) == "dijkstra"){
         alg = DIJKSTRA;
     }
@@ -111,7 +105,7 @@ int main(int argc, char *argv[]){
     }
 
     // Setting mode
-    Mode mode;
+    Mode mode = SS;
     if(std::string(argv[4]) == "-ss"){
         mode = SS;
     }
@@ -125,34 +119,36 @@ int main(int argc, char *argv[]){
     std::string source_path = argv[5];
     std::string result_path = "results/main-res.txt";
 
+    std::cout << ">> importing graph...";
     Graph* g = new Graph(graph_path);
-    g->print_graph();
-    // print_vector(g->ss_from_file(ss_file));
+
+    std::cout << "\t| imported with: V = " << g->V << ", E = " << g->E << std::endl;
 
     if(mode == SS){
+        std::cout << ">> importing sources...";
         std::vector<int> sources = g->ss_from_file(source_path);
-
-        std::cout << "sources: ";
+        std::cout << "\t| sources: ";
         print_vector(sources);
+        std::cout << "# indeces of nodes are decreased by 1\n";
+
+        std::vector<int> times;
+        int min_dist = MAX_INT;
+        int max_dist = 0;
 
         for(const auto& s : sources){
+            std::cout << ">> calculating distance for s = " << s;
             std::vector<int> distances;
 
             // int time_ms = 0.0;
-            int min_dist = MAX_INT;
-            int max_dist = 0;
+
 
             auto start_time = std::chrono::high_resolution_clock::now();
 
-
-
             if(alg == DIJKSTRA){
                 distances = g->dijkstra(s);
-                std::cout << "performed DIJKSTRA algorithm\n";
             }
             else if(alg == DIAL){
                 distances = g->dial(s);
-                std::cout << "performed DIAL algorithm\n";
             }
             else if(alg == RADIXHEAP){ // TODO: not implemented
                 distances = g->radixheap(s);
@@ -166,16 +162,22 @@ int main(int argc, char *argv[]){
                     min_dist = d;
                 }
             }
-            std::cout << "distances: ";
-            print_vector(distances);
 
             auto end_time = std::chrono::high_resolution_clock::now();
             auto time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
-            auto time_ms = time_diff.count() / 1000; // casting to ms in int
+            auto time = time_diff.count() / 1000; // casting to miliseconds in int
 
-            std::cout << "source: " << s << " min: " << min_dist << " max: " << max_dist << " time: " << time_ms << std::endl;
-            
+            times.push_back(time);
+            std::cout << "\t| finished with time: " << time << " ms"<< std::endl;
         }
+
+        int avg_time = 0;
+        for(const auto& t : times){
+            avg_time += t;
+        }
+        avg_time = avg_time / times.size();
+
+        g->ss_result(g->V, g->E, std::make_pair(min_dist, max_dist), avg_time, graph_path, source_path, result_path);
 
     }
 

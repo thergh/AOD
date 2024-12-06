@@ -145,37 +145,36 @@ std::vector<std::pair<int, int>> Graph::p2p_from_file(std::string p2p_path){
 }
 
 
-void Graph::ss_result(int V, int E, std::pair<int, int> range, float avg_time,
+void Graph::ss_result(int V, int E, std::pair<int, int> range, int avg_time,
                     std::string data_path, std::string ss_path, std::string result_path){
     std::ofstream file;
     file.open(result_path);
     file << "c wyniki dla danych:\n";
     file << "f " << data_path << " " << ss_path << std::endl;
+    file << "c wierzchołki: " << V <<", krawędzie: " << E << ", zakres długości: [" << range.first << ", " << range.second << "]\n";
+    file << "g " << V << " " << E << " " << range.first << " " << range.second << " " << std::endl;
     file << "c\n";
-    file << "c V\tE\tmin\tmax\n";
-    file << "g " << V << "\t" << E << "\t" << range.first << "\t" << range.second << "\t" << std::endl;
-    file << "c\n";
-    file << "c sredni czas wykonania:\n";
+    file << "c sredni czas wykonania: " << avg_time <<"\n";
     file << "t " << avg_time << std::endl;
     file.close();
 }
 
 
 void Graph::p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dists,
-                    std::pair<int, int> range, float avg_time,
+                    std::pair<int, int> range, int avg_time,
                     std::string data_path, std::string p2p_path, std::string result_path){
     std::ofstream file;
     file.open(result_path);
     file << "c wyniki dla danych:\n";
     file << "f " << data_path << " " << p2p_path << std::endl;
     file << "c\n";
-    file << "c V\tE\tmin\tmax\n";
-    file << "g " << V << "\t" << E << "\t" << range.first << "\t" << range.second << "\t" << std::endl;
+    file << "c wierzchołki: " << V <<", krawędzie: " << E << ", zakres długości: [" << range.first << ", " << range.second << "]\n";
+    file << "g " << V << " " << E << " " << range.first << " " << range.second << " " << std::endl;
     file << "c\n";
     file << "c dlugosc najkrotszych sciezek:\n";
     file << "c u\tv\tdist(u, v)\n";
     for(const auto& d : dists){
-        file << "d " << std::get<0>(d) + 1 << "\t"<< std::get<1>(d) + 1 << "\t"<< std::get<2>(d) << "\n";
+        file << "d " << std::get<0>(d) + 1 << " "<< std::get<1>(d) + 1 << " "<< std::get<2>(d) << "\n";
     }
     file << "c\n";
     file << "c sredni czas wykonania:\n";
