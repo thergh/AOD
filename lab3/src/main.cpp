@@ -12,8 +12,19 @@
 #include <utility>
 #include <filesystem>
 #include <string>
+#include <chrono>
+
 
 #include "algo.hpp"
+
+void print_vector(std::vector<int> v){
+    std::cout << "[ ";
+    for(auto x : v){
+        std::cout << x << " ";
+    }
+    std::cout << "]\n";
+}
+
 
 
 /**
@@ -24,8 +35,9 @@ int check_arguments(int argc, char *argv[]){
         std::cout << "Error: Wrong number of arguments." << "\n";
         return 1;
     }
-    if(std::string(argv[1]) != "dijkstra" && std::string(argv[4]) != "dial" && std::string(argv[1]) != "radixheap"){
+    if(std::string(argv[1]) != "dijkstra" && std::string(argv[1]) != "dial" && std::string(argv[1]) != "radixheap"){
         std::cout << "Error: Argument number 1 must be 'dijkstra' or 'dial' or 'radixheap'" << "\n";
+        std::cout << "argv[1]: " << argv[1] << std::endl;
         return 1;
     }    
     if(std::string(argv[2]) != "-d"){ // First argument is always the same
@@ -107,6 +119,65 @@ int main(int argc, char *argv[]){
         mode = P2P;
     }
 
+    const int MAX_INT = std::numeric_limits<int>::max();
+    
+    std::string graph_path = argv[3];
+    std::string source_path = argv[5];
+    std::string result_path = "results/main-res.txt";
+
+    Graph* g = new Graph(graph_path);
+    g->print_graph();
+    // print_vector(g->ss_from_file(ss_file));
+
+    if(mode == SS){
+        std::vector<int> sources = g->ss_from_file(source_path);
+
+        std::cout << "sources: ";
+        print_vector(sources);
+
+        for(const auto& s : sources){
+            std::vector<int> distances;
+
+            // int time_ms = 0.0;
+            int min_dist = MAX_INT;
+            int max_dist = 0;
+
+            auto start_time = std::chrono::high_resolution_clock::now();
+
+
+
+            if(alg == DIJKSTRA){
+                distances = g->dijkstra(s);
+                std::cout << "performed DIJKSTRA algorithm\n";
+            }
+            else if(alg == DIAL){
+                distances = g->dial(s);
+                std::cout << "performed DIAL algorithm\n";
+            }
+            else if(alg == RADIXHEAP){ // TODO: not implemented
+                distances = g->radixheap(s);
+            }
+
+            for(const auto& d : distances){
+                if(d > max_dist){
+                    max_dist = d;
+                }
+                if(d < min_dist){
+                    min_dist = d;
+                }
+            }
+            std::cout << "distances: ";
+            print_vector(distances);
+
+            auto end_time = std::chrono::high_resolution_clock::now();
+            auto time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
+            auto time_ms = time_diff.count() / 1000; // casting to ms in int
+
+            std::cout << "source: " << s << " min: " << min_dist << " max: " << max_dist << " time: " << time_ms << std::endl;
+            
+        }
+
+    }
 
 
 

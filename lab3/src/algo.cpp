@@ -15,6 +15,16 @@
 #include "algo.hpp"
 
 
+void print_vector(std::vector<int> v){
+    std::cout << "[ ";
+    for(auto x : v){
+        std::cout << x << " ";
+    }
+    std::cout << "]\n";
+}
+
+
+
 Graph::Graph(std::string input_path){
     std::ifstream input(input_path);
     std::string line;
@@ -50,7 +60,8 @@ Graph::Graph(std::string input_path){
             while(ss >> word){
                 words.push_back(word);
             }
-            // decerasing by one to make vertices start from 0 instead of 1, to match vector convention
+            // decerasing by one to make vertices start from 0 instead of 1,
+            // to match vector convention
 
             add_edge(stoul(words[1]) - 1, stoul(words[2]) - 1, stoul(words[3]));
 
@@ -98,14 +109,14 @@ std::vector<int> Graph::ss_from_file(std::string ss_path){
     while(std::getline(input, line)){
         
         if(line[0] == 's'){
-            std::cout << line << "\n";
+            // std::cout << line << "\n";
             std::vector<std::string> words;
             std::string word;
             std::istringstream ss(line);
             while(ss >> word){
                 words.push_back(word);
             }
-            ss_vector.push_back(stoul(words[1]));
+            ss_vector.push_back(stoul(words[1]) - 1);
         }
     }   
     return ss_vector;
@@ -127,7 +138,7 @@ std::vector<std::pair<int, int>> Graph::p2p_from_file(std::string p2p_path){
             while(ss >> word){
                 words.push_back(word);
             }
-            p2p_vector.push_back(std::make_pair(stoul(words[1]), stoul(words[2])));
+            p2p_vector.push_back(std::make_pair(stoul(words[1]) - 1, stoul(words[2]) - 1));
         }
     }   
     return p2p_vector;    
@@ -162,9 +173,9 @@ void Graph::p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dist
     file << "g " << V << "\t" << E << "\t" << range.first << "\t" << range.second << "\t" << std::endl;
     file << "c\n";
     file << "c dlugosc najkrotszych sciezek:\n";
-    file << "c u\tv\tdlugosc\n";
+    file << "c u\tv\tdist(u, v)\n";
     for(const auto& d : dists){
-        file << "d " << std::get<0>(d) << "\t"<< std::get<1>(d) << "\t"<< std::get<2>(d) << "\n";
+        file << "d " << std::get<0>(d) + 1 << "\t"<< std::get<1>(d) + 1 << "\t"<< std::get<2>(d) << "\n";
     }
     file << "c\n";
     file << "c sredni czas wykonania:\n";

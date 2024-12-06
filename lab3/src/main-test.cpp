@@ -27,11 +27,11 @@ int main(){
 
     std::string result_path = "results/mock_res.txt";
     // g->ss_result(g->V, g->E, {-1, -1}, -0.0, graph_file, ss_file, result_path);
-    g->p2p_result(g->V, g->E, {{1, 2, 3}}, {-1, -1}, -0.0, graph_file, p2p_file, result_path);
+    // g->p2p_result(g->V, g->E, {{1, 2, 3}}, {-1, -1}, -0.0, graph_file, p2p_file, result_path);
 
     // g->p2p_from_file("data/pary.p2p");
-    // auto distances1 = g->dijkstra(0);
-    // print_vector(distances1);
+    auto distances1 = g->dijkstra(0);
+    print_vector(distances1);
     // auto distances2 = g->dial(0);
     // print_vector(distances2);
 
