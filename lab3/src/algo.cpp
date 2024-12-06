@@ -168,7 +168,7 @@ void Graph::p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dist
     file << "c wyniki dla danych:\n";
     file << "f " << data_path << " " << p2p_path << std::endl;
     file << "c\n";
-    file << "c wierzchołki: " << V <<", krawędzie: " << E << ", zakres długości: [" << range.first << ", " << range.second << "]\n";
+    file << "c wierzchołki: " << V <<", krawędzie: " << E << ", zakres długości krawędzi: [" << range.first << ", " << range.second << "]\n";
     file << "g " << V << " " << E << " " << range.first << " " << range.second << " " << std::endl;
     file << "c\n";
     file << "c dlugosc najkrotszych sciezek:\n";

@@ -20,7 +20,6 @@
 void print_vector(std::vector<int> v);
 
 
-
 /**
  * Returns 1 if there is an error in the arguments, 0 otherwise
  */
@@ -67,9 +66,6 @@ int check_arguments(int argc, char *argv[]){
         std::cout << "Error: File provided in argument 5 has wrong file format. Format must match argument 4: .p2p" << "\n";
     }
 
-
-
-
     return 0;
 }
 
@@ -92,7 +88,6 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    // Setting algorithm
     Algorithm alg = DIJKSTRA;
     if(std::string(argv[1]) == "dijkstra"){
         alg = DIJKSTRA;
@@ -104,7 +99,6 @@ int main(int argc, char *argv[]){
         alg = RADIXHEAP;
     }
 
-    // Setting mode
     Mode mode = SS;
     if(std::string(argv[4]) == "-ss"){
         mode = SS;
@@ -117,7 +111,7 @@ int main(int argc, char *argv[]){
     
     std::string graph_path = argv[3];
     std::string source_path = argv[5];
-    std::string result_path = "results/main-res.txt";
+    std::string result_path = "results/main-result.txt";
 
     std::cout << ">> importing graph...";
     Graph* g = new Graph(graph_path);
@@ -138,10 +132,6 @@ int main(int argc, char *argv[]){
         for(const auto& s : sources){
             std::cout << ">> calculating distance for s = " << s;
             std::vector<int> distances;
-
-            // int time_ms = 0.0;
-
-
             auto start_time = std::chrono::high_resolution_clock::now();
 
             if(alg == DIJKSTRA){
@@ -177,13 +167,75 @@ int main(int argc, char *argv[]){
         }
         avg_time = avg_time / times.size();
 
-        g->ss_result(g->V, g->E, std::make_pair(min_dist, max_dist), avg_time, graph_path, source_path, result_path);
+        g->ss_result(g->V, g->E, std::make_pair(min_dist, g->max_weight), avg_time, graph_path, source_path, result_path);
 
     }
 
 
+    if(mode == P2P){
+        std::cout << ">> importing pairs...";
+        std::vector<std::pair<int, int>> pairs = g->p2p_from_file(source_path);
+        std::cout << "\t| number of pairs: " << pairs.size() << std::endl;
+        // std::cout << "[ ";
+        // for(const auto& p : pairs){
+        //     std::cout << "(" << p.first << ", " << p.second<< ") ";
+        // }
+        // std::cout << "]";
+        
+        std::cout << "# indeces of nodes are decreased by 1\n";
 
+        std::vector<int> times;
+        int min_dist = MAX_INT;
+        int max_dist = 0;
+        std::vector<std::tuple<int, int, int>> dists;
 
+        for(int i=0; i<pairs.size(); i++){
+            const auto& p = pairs[i];
+            int u = p.first;
+            int v = p.second;
 
+            std::cout << ">> " << "[" << i + 1 << " / " << pairs.size() << "]:\t"<< "(" << u << ", " << v << ")     \t";
+            std::vector<int> distances;
+            auto start_time = std::chrono::high_resolution_clock::now();
+
+            if(alg == DIJKSTRA){
+                distances = g->dijkstra(u);
+            }
+            else if(alg == DIAL){
+                distances = g->dial(u);
+            }
+            else if(alg == RADIXHEAP){ // TODO: not implemented
+                distances = g->radixheap(u);
+            }
+
+            for(const auto& d : distances){
+                if(d > max_dist){
+                    max_dist = d;
+                }
+                if(d < min_dist){
+                    min_dist = d;
+                }
+            }
+
+            int dist_u_v = distances[v];
+            dists.push_back(std::make_tuple(u, v, dist_u_v));
+
+            auto end_time = std::chrono::high_resolution_clock::now();
+            auto time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
+            auto time = time_diff.count() / 1000; // casting to miliseconds in int
+
+            times.push_back(time);
+            std::cout << "| distance: " << dist_u_v << "   \ttime: " << time << " ms"<< std::endl;
+        }
+
+        int avg_time = 0;
+        for(const auto& t : times){
+            avg_time += t;
+        }
+        avg_time = avg_time / times.size();
+
+        g->p2p_result(g->V, g->E, dists,std::make_pair(min_dist, g->max_weight), avg_time, graph_path, source_path, result_path);
+
+    }
     return 0;
 };
