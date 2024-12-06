@@ -212,14 +212,14 @@ std::vector<int> Graph::dijkstra(int source){
     std::priority_queue<Node> Q; // min heap based priority queue
     std::vector<int> distances(size, max_int); // shortest known distances to vertices
 
-    // initializing Q and distances from adj. list
-    for(int i=0; i<size; i++){
-        // initializing current distance as max_int
-        Node new_node = Node(i, max_int);
-        distances[i] = max_int;
-        // new_node.print_node();
-        Q.push(new_node);
-    }
+    // // initializing Q and distances from adj. list
+    // for(int i=0; i<size; i++){
+    //     // initializing current distance as max_int
+    //     Node new_node = Node(i, max_int);
+    //     distances[i] = max_int;
+    //     // new_node.print_node();
+    //     Q.push(new_node);
+    // }
 
     // push the source node with distance 0
     distances[source] = 0;
