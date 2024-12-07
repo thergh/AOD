@@ -80,10 +80,77 @@ void generate_R4_C(int range_start, int range_end){
     }
 }
 
-// void generate_Square_n(int range){
-//     std::string result_path = "results/Square_n.txt"
-// }
+void generate_Square_n(int range_start, int range_end){
+    // DIMACS/ch9-1.1/inputs/Square-n/Square-n.10.0.gr
+    std::string result_path = "results/Square-n.txt";
+    std::string location_path = "DIMACS/ch9-1.1/inputs/Square-n/";
+    std::string base_name = "Square-n.";
+    std::string suffix = ".0.gr";
+    // DIMACS/ch9-1.1/inputs/Random4-C/Random4-C.13.0.gr
 
+    for(int i=range_start; i<=range_end; i++){
+        std::string index_string = std::to_string(i);
+        std::string full_name = location_path;
+        std::string file_name = base_name + index_string + suffix;
+        std::cout << ">> [" << i << " / " << range_end << "]: "<< file_name <<"\t|";
+        ss_tech(location_path, file_name, std::to_string(i), result_path);
+        std::cout << " done\n";
+    }
+}
+
+void generate_Long_n(int range_start, int range_end){
+    // DIMACS/ch9-1.1/inputs/Long-n/Long-n.10.0.gr
+    std::string result_path = "results/Long-n.txt";
+    std::string location_path = "DIMACS/ch9-1.1/inputs/Long-n/";
+    std::string base_name = "Long-n.";
+    std::string suffix = ".0.gr";
+    // DIMACS/ch9-1.1/inputs/Random4-C/Random4-C.13.0.gr
+
+    for(int i=range_start; i<=range_end; i++){
+        std::string index_string = std::to_string(i);
+        std::string full_name = location_path;
+        std::string file_name = base_name + index_string + suffix;
+        std::cout << ">> [" << i << " / " << range_end << "]: "<< file_name <<"\t|";
+        ss_tech(location_path, file_name, std::to_string(i), result_path);
+        std::cout << " done\n";
+    }
+}
+
+void generate_Long_C(int range_start, int range_end){
+    // DIMACS/ch9-1.1/inputs/Long-C/Long-C.10.0.gr
+    std::string result_path = "results/Long-C.txt";
+    std::string location_path = "DIMACS/ch9-1.1/inputs/Long-C/";
+    std::string base_name = "Long-C.";
+    std::string suffix = ".0.gr";
+    // DIMACS/ch9-1.1/inputs/Random4-C/Random4-C.13.0.gr
+
+    for(int i=range_start; i<=range_end; i++){
+        std::string index_string = std::to_string(i);
+        std::string full_name = location_path;
+        std::string file_name = base_name + index_string + suffix;
+        std::cout << ">> [" << i << " / " << range_end << "]: "<< file_name <<"\t|";
+        ss_tech(location_path, file_name, std::to_string(i), result_path);
+        std::cout << " done\n";
+    }
+}
+
+void generate_Square_C(int range_start, int range_end){
+    // DIMACS/ch9-1.1/inputs/Long-C/Long-C.10.0.gr
+    std::string result_path = "results/Square-C.txt";
+    std::string location_path = "DIMACS/ch9-1.1/inputs/Square-C/";
+    std::string base_name = "Square-C.";
+    std::string suffix = ".0.gr";
+    // DIMACS/ch9-1.1/inputs/Random4-C/Random4-C.13.0.gr
+
+    for(int i=range_start; i<=range_end; i++){
+        std::string index_string = std::to_string(i);
+        std::string full_name = location_path;
+        std::string file_name = base_name + index_string + suffix;
+        std::cout << ">> [" << i << " / " << range_end << "]: "<< file_name <<"\t|";
+        ss_tech(location_path, file_name, std::to_string(i), result_path);
+        std::cout << " done\n";
+    }
+}
 // void generate_USA_road_t(){
 //     std::string result_path = "results/USA_road_t.txt"
 // }
@@ -93,5 +160,10 @@ int main(){
     // ss_tech("DIMACS/ch9-1.1/inputs/Random4-n/Random4-n.10.0.gr", "ss_tech_result.txt");
     generate_R4_n(10, 12);
     generate_R4_C(1, 2);
+    generate_Long_n(10, 12);
+    generate_Square_n(10, 12);
+    generate_Long_C(1, 2);
+    generate_Square_C(1, 2);
+
 
 }
