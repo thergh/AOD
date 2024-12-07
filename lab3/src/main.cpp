@@ -225,7 +225,7 @@ int main(int argc, char *argv[]){
             auto time = time_diff.count() / 1000; // casting to miliseconds in int
 
             times.push_back(time);
-            std::cout << "| distance: " << dist_u_v << "   \ttime: " << time << " ms"<< std::endl;
+            std::cout << "| distance: " << dist_u_v << "   \ttime: " << time << " ms" << std::endl;
         }
 
         int avg_time = 0;

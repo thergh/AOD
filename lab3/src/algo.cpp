@@ -27,6 +27,12 @@ void print_vector(std::vector<int> v){
 
 Graph::Graph(std::string input_path){
     std::ifstream input(input_path);
+    if(input.is_open()){
+        
+    }
+    else{
+        std::cout << "Error: Input file not open\n";
+    }
     std::string line;
 
     this->max_weight = 0;
@@ -321,37 +327,37 @@ bool in_range(int x, std::pair<int, int> p){
 }
 
 
-std::vector<int> Graph::radixheap(int source){
-    const int SIZE = this->adjacency_list.size();
-    const int MAX_INT = std::numeric_limits<int>::max();
-    const int MAX_DIST = this->max_weight;
-    const int K = SIZE * MAX_DIST;
-    const int BUCKET_NUMBER = log2(K); // maybe add 1?
+// std::vector<int> Graph::radixheap(int source){
+//     const int SIZE = this->adjacency_list.size();
+//     const int MAX_INT = std::numeric_limits<int>::max();
+//     const int MAX_DIST = this->max_weight;
+//     const int K = SIZE * MAX_DIST;
+//     const int BUCKET_NUMBER = log2(K); // maybe add 1?
 
-    std::vector<int> dist(SIZE);
-    std::vector<std::list<int>> buckets(BUCKET_NUMBER); // maybe MAX_DIST + 1??
-    std::vector<std::pair<int, int>> ranges(BUCKET_NUMBER);
-    std::cout << "MAX_DIST: " << MAX_DIST << "\n";
-    std::cout << "bucket size: " << buckets.size() << "\n";
+//     std::vector<int> dist(SIZE);
+//     std::vector<std::list<int>> buckets(BUCKET_NUMBER); // maybe MAX_DIST + 1??
+//     std::vector<std::pair<int, int>> ranges(BUCKET_NUMBER);
+//     std::cout << "MAX_DIST: " << MAX_DIST << "\n";
+//     std::cout << "bucket size: " << buckets.size() << "\n";
 
-    dist[source] = 0;
-    // buckets[0].push_back(source);
+//     dist[source] = 0;
+//     // buckets[0].push_back(source);
 
-    // init ranges
-    ranges[0] = {1, 1};
-    for(int i=1; i<BUCKET_NUMBER; i++){
-        ranges[i] = {std::pow(2, i - 1), std::pow(2, i) - 1};
-    }
+//     // init ranges
+//     ranges[0] = {1, 1};
+//     for(int i=1; i<BUCKET_NUMBER; i++){
+//         ranges[i] = {std::pow(2, i - 1), std::pow(2, i) - 1};
+//     }
 
-    // for(auto r : ranges){ // printing bucket ranges
-    //     std::cout << "(" << r.first << ", " << r.second << ")\n";
-    // }
-    // std::cout << in_range(20, ranges.back());
+//     // for(auto r : ranges){ // printing bucket ranges
+//     //     std::cout << "(" << r.first << ", " << r.second << ")\n";
+//     // }
+//     // std::cout << in_range(20, ranges.back());
 
-    // while(true){ // we escape if last bucket is empty
+//     // while(true){ // we escape if last bucket is empty
 
 
-    // }
-    return dist;
+//     // }
+//     return dist;
 
-}
+// }
