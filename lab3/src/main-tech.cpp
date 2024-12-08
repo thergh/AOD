@@ -68,10 +68,34 @@ void generate(std::string test_name, int range_start, int range_end){
     }
 }
 
+void generate_USA(std::string test_name){
+    std::string result_path = "results/" + test_name + ".txt";
+    std::string location_path = "inputs/USA-road-d/";
+    std::string prefix = "USA-road-d.";
+    std::string suffix = ".gr";
 
-// void generate_USA_road_t(){
-//     std::string result_path = "results/USA_road_t.txt"
-// }
+    std::string file_name = prefix + test_name + suffix;
+    std::cout << ">> " << file_name <<"\t|";
+
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    ss_tech(location_path, file_name, test_name, result_path);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
+    auto time = float(time_diff.count()) / 1000000; // casting to miliseconds in int
+
+    std::cout << " completed, time: " << time << " sec" << std::endl;
+    
+}
+
+void generate_all_USA(){
+    std::vector<std::string> names = {"BAY", "CAL", "COL", "FLA", "LKS", "NE", "NW", "NY"};
+    for(const auto& n : names){
+        generate_USA(n);
+    }
+    
+}
 
 
 void run_all(int start, int end){
@@ -85,5 +109,6 @@ void run_all(int start, int end){
 
 
 int main(){
-    run_all(10, 10);
+    // run_all(10, 10);
+    generate_all_USA();
 }
