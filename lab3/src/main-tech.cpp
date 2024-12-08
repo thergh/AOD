@@ -69,7 +69,7 @@ void generate(std::string test_name, int range_start, int range_end){
 }
 
 void generate_USA(std::string test_name){
-    std::string result_path = "results/" + test_name + ".txt";
+    std::string result_path = "results/USA-road-d.txt";
     std::string location_path = "inputs/USA-road-d/";
     std::string prefix = "USA-road-d.";
     std::string suffix = ".gr";
