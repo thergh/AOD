@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <string>
 #include <fstream>
-
+#include <random>
 
 #include "algo.hpp"
 
@@ -142,13 +142,42 @@ std::vector<int> run_algos(int size, std::string input_path){
     end_time = std::chrono::high_resolution_clock::now();
     time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
     int t_0_dial = time_diff.count(); // casting to miliseconds in int
+    
+    // rng
+    int V = g->V;
+    std::random_device r_dev;
+    std::mt19937 rng(r_dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist(0, V - 1); // distribution in range [1, 6]
 
-    // t-avg-Dijkstra
-    int t_avg_dijkstra = 0;
+    int t_sum_dijkstra = 0;
+    std::vector<int> times_dijkstra;
+    int t_sum_dial = 0;
+    std::vector<int> times_dial; 
 
+    for(int i=0; i<4; i++){
+        int random_idx = dist(rng);
 
-    // t-avg-dial
-    int t_avg_dial = 0;
+        // random index dijkstra
+        start_time = std::chrono::high_resolution_clock::now();
+        g->dijkstra(random_idx);
+        end_time = std::chrono::high_resolution_clock::now();
+        time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
+        int t_rnd_dijkstra = time_diff.count(); // casting to miliseconds in int
+        times_dijkstra.push_back(t_rnd_dijkstra);
+        t_sum_dijkstra += t_rnd_dijkstra;
+
+        // random index dial
+        start_time = std::chrono::high_resolution_clock::now();
+        g->dial(random_idx);
+        end_time = std::chrono::high_resolution_clock::now();
+        time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
+        int t_rnd_dial = time_diff.count(); // casting to miliseconds in int
+        times_dial.push_back(t_rnd_dial);
+        t_sum_dial += t_rnd_dial;
+    }   
+
+    int t_avg_dijkstra = t_sum_dijkstra / 4;
+    int t_avg_dial = t_sum_dial / 4;
 
     results = {size, t_0_dijkstra, t_0_dial, t_avg_dijkstra, t_avg_dial};
     return results;
