@@ -257,11 +257,66 @@ std::vector<int> Graph::dijkstra(int source){
 }
 
 
+// std::vector<int> Graph::dial(int source){
+
+//     int size = this->adjacency_list.size();
+//     const int MAX_INT = std::numeric_limits<int>::max();
+//     const int MAX_DIST = this->max_weight;
+
+//     // iterator to have access to elements in old buckets
+//     std::vector<int> dist(size, std::numeric_limits<int>::max());
+//     std::vector<std::list<int>> buckets(MAX_DIST + 1);
+
+//     dist[source] = 0;
+//     buckets[0].push_back(source);
+
+//     int bucket_index = 0;
+
+//     while(bucket_index <= MAX_DIST){
+        
+//         // lookign for the first non-empty bucket
+//         while(bucket_index <= MAX_DIST && buckets[bucket_index].empty()){
+//             bucket_index++;
+//         }
+
+//         if(bucket_index > MAX_DIST){
+//             break;
+//         }
+
+//         // iterate over all nodes in the current bucket
+//         while(!buckets[bucket_index].empty()){
+//             int u = buckets[bucket_index].front();
+//             buckets[bucket_index].pop_front();
+
+//             // iterate over adjacent nodes
+//             for(const auto& edge : adjacency_list[u]){
+//                 int v = edge.first;
+//                 int v_dist = edge.second;
+
+//                 // update distance
+//                 if(dist[u] + v_dist < dist[v]){
+//                     if(dist[v] != MAX_INT){
+//                         buckets[dist[v] % (MAX_DIST + 1)].remove(v);
+//                     }
+
+//                     dist[v] = dist[u] + v_dist;
+//                     buckets[dist[v] % (MAX_DIST + 1)].push_back(v);
+//                 }
+//             }
+//         }
+//     }
+
+//     return dist;
+// }
+
+
 std::vector<int> Graph::dial(int source){
+    // std::cout << "----------source = " << source << std::endl;
 
     int size = this->adjacency_list.size();
     const int MAX_INT = std::numeric_limits<int>::max();
     const int MAX_DIST = this->max_weight;
+    int nodes_processed = size;
 
     // iterator to have access to elements in old buckets
     std::vector<int> dist(size, std::numeric_limits<int>::max());
@@ -271,22 +326,25 @@ std::vector<int> Graph::dial(int source){
     buckets[0].push_back(source);
 
     int bucket_index = 0;
+    
 
-    while(bucket_index <= MAX_DIST){
+    while(nodes_processed > 0){
         
-        // lookign for the first non-empty bucket
-        while(bucket_index <= MAX_DIST && buckets[bucket_index].empty()){
-            bucket_index++;
+        // looking for the first non-empty bucket
+        while(buckets[bucket_index].empty()){
+            bucket_index = (bucket_index + 1) % (MAX_DIST + 1);
         }
 
-        if(bucket_index > MAX_DIST){
-            break;
-        }
+        // if(bucket_index > MAX_DIST){
+        //     break;
+        // }
 
         // iterate over all nodes in the current bucket
         while(!buckets[bucket_index].empty()){
             int u = buckets[bucket_index].front();
             buckets[bucket_index].pop_front();
+            nodes_processed --;
+            // std::cout << "processed " << u << std::endl;
 
             // iterate over adjacent nodes
             for(const auto& edge : adjacency_list[u]){
@@ -305,9 +363,11 @@ std::vector<int> Graph::dial(int source){
             }
         }
     }
-
+    // std::cout << "v: " << V << " nodes left: " << nodes_processed << std::endl;
     return dist;
 }
+
+
 
 
 
