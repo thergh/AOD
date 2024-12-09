@@ -46,7 +46,7 @@ void ss_tech(std::string location_path, std::string file_name,  std::string row_
 
 void generate(std::string test_name, int range_start, int range_end){
     std::string result_path = "results/" + test_name + ".txt";
-    std::string location_path = "DIMACS/ch9-1.1/inputs/" + test_name + "/";
+    std::string location_path = "ch9-1.1/inputs/" + test_name + "/";
     std::string base_name = test_name + ".";
     std::string suffix = ".0.gr";
     
@@ -109,6 +109,6 @@ void run_all(int start, int end){
 
 
 int main(){
-    // run_all(10, 10);
-    generate_all_USA();
+    run_all(10, 10);
+    // generate_all_USA();
 }
