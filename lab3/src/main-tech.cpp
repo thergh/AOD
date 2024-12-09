@@ -114,27 +114,27 @@ void run_test_file(std::string test_name, int start_idx, int end_idx){
 
 
 void run_C_tests(int start_idx, int end_idx){
-    run_test_file("Long-C", start_idx, end_idx);
+    // run_test_file("Long-C", start_idx, end_idx); // max 8
     run_test_file("Random4-C", start_idx, end_idx);
-    run_test_file("Square-C", start_idx, end_idx);
+    // run_test_file("Square-C", start_idx, end_idx);
 };
 
 void run_n_tests(int start_idx, int end_idx){
-    run_test_file("Long-n", start_idx, end_idx);
+    run_test_file("Long-n", start_idx, end_idx); // max 18
     run_test_file("Random4-n", start_idx, end_idx);
     run_test_file("Square-n", start_idx, end_idx);
 };
 
 
-void to_file_dist(std::string output_path, int index, int d_0_dijkstra, int d_0_dial,
-            int d_avg_dijkstra, int d_avg_dial, int t_avg_dijkstra, int t_avg_dial){
+void to_file_dist(std::string output_path, std::string name, std::string d_0_dijkstra, std::string d_0_dial,
+            std::string d_avg_dijkstra, std::string d_avg_dial){
 
     std::ofstream ofs;
     ofs.open(output_path, std::ios_base::app);
     if(!ofs.is_open()){
         std::cout << "Error: Result file not open\n";
     }
-    ofs << index << " " << d_0_dijkstra << " " << d_0_dial  << " " << d_avg_dijkstra  << " " <<  d_avg_dial  << " " <<  t_avg_dijkstra << " " << t_avg_dial<< std::endl;
+    ofs << name << " " << d_0_dijkstra << " " << d_0_dial  << " " << d_avg_dijkstra  << " " <<  d_avg_dial << std::endl;
     ofs.close();
 }
 
@@ -142,8 +142,8 @@ void to_file_dist(std::string output_path, int index, int d_0_dijkstra, int d_0_
 /**
  * returns vector: {rozmiar, t-0-Dijkstra, t-0-dial, t-avg-Dijkstra, t-avg-dial}
  */
-std::vector<int> compare_algos_dist(int index, std::string input_path){
-    std::vector<int> results(5);
+std::vector<std::string> compare_algos_dist(std::string name, std::string input_path){
+    std::vector<std::string> results(5);
     Graph* g = new Graph(input_path);
     int V = g->V;
 
@@ -160,9 +160,9 @@ std::vector<int> compare_algos_dist(int index, std::string input_path){
     std::mt19937 rng(r_dev());
     std::uniform_int_distribution<std::mt19937::result_type> dist(0, V - 1); // distribution in range [1, 6]
 
-    int d_sum_dijkstra = 0;
+    long d_sum_dijkstra = 0;
     std::vector<int> dist_dijkstra;
-    int d_sum_dial = 0;
+    long d_sum_dial = 0;
     std::vector<int> dist_dial; 
 
     for(int i=0; i<4; i++){
@@ -182,19 +182,39 @@ std::vector<int> compare_algos_dist(int index, std::string input_path){
     int d_avg_dijkstra = d_sum_dijkstra / 4;
     int d_avg_dial = d_sum_dial / 4;
 
-    results = {index, d_0_dijkstra, d_0_dial, d_avg_dijkstra, d_avg_dial};
+    results = {name, std::to_string(d_0_dijkstra), std::to_string(d_0_dial), std::to_string(d_avg_dijkstra), std::to_string(d_avg_dial)};
     // std::cout << "<><>ra: " << v_dijkstra[2];
     // std::cout << "<><>al: " << v_dial[2];
     return results;
 }
 
+void run_dist(){
+    // auto v = compare_algos_dist("Square-n.18", "ch9-1.1/inputs/Square-n/Square-n.18.0.gr");
+    // to_file_dist("results/dist.txt", v[0], v[1], v[2], v[3], v[4]);
+    auto v = compare_algos_dist("Long-n.18", "ch9-1.1/inputs/Long-n/Long-n.18.0.gr");
+    to_file_dist("results/dist.txt", v[0], v[1], v[2], v[3], v[4]);
+    // v = compare_algos_dist("Random4-n.18", "ch9-1.1/inputs/Random4-n/Random4-n.18.0.gr");
+    // to_file_dist("results/dist.txt", v[0], v[1], v[2], v[3], v[4]);
+    // v = compare_algos_dist("Square-C.8", "ch9-1.1/inputs/Square-C/Square-C.8.0.gr");
+    // to_file_dist("results/dist.txt", v[0], v[1], v[2], v[3], v[4]);
+    // auto v = compare_algos_dist("Long-C.8", "ch9-1.1/inputs/Long-C/Long-C.8.0.gr");
+    // to_file_dist("results/dist.txt", v[0], v[1], v[2], v[3], v[4]);
+    // v = compare_algos_dist("Random4-C.8", "ch9-1.1/inputs/Random4-C/Random4-C.8.0.gr");
+    // to_file_dist("results/dist.txt", v[0], v[1], v[2], v[3], v[4]);
+}
+
 
 int main(){
-    // run_C_tests(1, 14);
-    run_n_tests(10, 21);
+    // run_C_tests(5, 5);
+    // run_C_tests(4, 4);
+    // run_C_tests(3, 3);
+    // run_C_tests(2, 2);
+    // run_C_tests(1, 1);
+    // run_n_tests(11, 18);
     // to_file_dist("results/res-a.txt", 0, 1, 2, 3, 4, 5, 6);
     // print_vector(compare_algos_dist(1, "ch9-1.1/docs/format/samples/sample-c.gr.txt"));
     // print_vector(compare_algos_dist(1, "ch9-1.1/inputs/Square-n/Square-n.10.0.gr"));
     // compare_algos_dist(1, "ch9-1.1/inputs/Square-n/Square-n.10.0.gr");
+    run_dist();
 
 }

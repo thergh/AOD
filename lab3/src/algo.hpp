@@ -74,4 +74,4 @@ class Graph{
 
 };
 
-#endif /* SRC_ALGO_INCLUDED */ 
+#endif /* SRC_ALGO_INCLUDED */

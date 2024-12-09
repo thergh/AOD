@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <functional>
 #include <utility>
+#include <cassert>
 
 
 #include "algo.hpp"
@@ -217,15 +218,6 @@ std::vector<int> Graph::dijkstra(int source){
     std::priority_queue<Node> Q; // min heap based priority queue
     std::vector<int> distances(size, max_int); // shortest known distances to vertices
 
-    // // initializing Q and distances from adj. list
-    // for(int i=0; i<size; i++){
-    //     // initializing current distance as max_int
-    //     Node new_node = Node(i, max_int);
-    //     distances[i] = max_int;
-    //     // new_node.print_node();
-    //     Q.push(new_node);
-    // }
-
     // push the source node with distance 0
     distances[source] = 0;
     Q.push(Node(source, 0));
@@ -257,58 +249,6 @@ std::vector<int> Graph::dijkstra(int source){
 }
 
 
-// std::vector<int> Graph::dial(int source){
-
-//     int size = this->adjacency_list.size();
-//     const int MAX_INT = std::numeric_limits<int>::max();
-//     const int MAX_DIST = this->max_weight;
-
-//     // iterator to have access to elements in old buckets
-//     std::vector<int> dist(size, std::numeric_limits<int>::max());
-//     std::vector<std::list<int>> buckets(MAX_DIST + 1);
-
-//     dist[source] = 0;
-//     buckets[0].push_back(source);
-
-//     int bucket_index = 0;
-
-//     while(bucket_index <= MAX_DIST){
-        
-//         // lookign for the first non-empty bucket
-//         while(bucket_index <= MAX_DIST && buckets[bucket_index].empty()){
-//             bucket_index++;
-//         }
-
-//         if(bucket_index > MAX_DIST){
-//             break;
-//         }
-
-//         // iterate over all nodes in the current bucket
-//         while(!buckets[bucket_index].empty()){
-//             int u = buckets[bucket_index].front();
-//             buckets[bucket_index].pop_front();
-
-//             // iterate over adjacent nodes
-//             for(const auto& edge : adjacency_list[u]){
-//                 int v = edge.first;
-//                 int v_dist = edge.second;
-
-//                 // update distance
-//                 if(dist[u] + v_dist < dist[v]){
-//                     if(dist[v] != MAX_INT){
-//                         buckets[dist[v] % (MAX_DIST + 1)].remove(v);
-//                     }
-
-//                     dist[v] = dist[u] + v_dist;
-//                     buckets[dist[v] % (MAX_DIST + 1)].push_back(v);
-//                 }
-//             }
-//         }
-//     }
-
-//     return dist;
-// }
-
 
 std::vector<int> Graph::dial(int source){
     // std::cout << "----------source = " << source << std::endl;
@@ -329,12 +269,13 @@ std::vector<int> Graph::dial(int source){
     
 
     while(nodes_processed > 0){
+
         
         // looking for the first non-empty bucket
         while(buckets[bucket_index].empty()){
             bucket_index = (bucket_index + 1) % (MAX_DIST + 1);
+            
         }
-
         // if(bucket_index > MAX_DIST){
         //     break;
         // }
@@ -371,7 +312,6 @@ std::vector<int> Graph::dial(int source){
 
 
 
-
 void find_nonempty(){
     return;
 }
@@ -386,38 +326,3 @@ bool in_range(int x, std::pair<int, int> p){
     return (x >= p.first && x <= p.second);
 }
 
-
-// std::vector<int> Graph::radixheap(int source){
-//     const int SIZE = this->adjacency_list.size();
-//     const int MAX_INT = std::numeric_limits<int>::max();
-//     const int MAX_DIST = this->max_weight;
-//     const int K = SIZE * MAX_DIST;
-//     const int BUCKET_NUMBER = log2(K); // maybe add 1?
-
-//     std::vector<int> dist(SIZE);
-//     std::vector<std::list<int>> buckets(BUCKET_NUMBER); // maybe MAX_DIST + 1??
-//     std::vector<std::pair<int, int>> ranges(BUCKET_NUMBER);
-//     std::cout << "MAX_DIST: " << MAX_DIST << "\n";
-//     std::cout << "bucket size: " << buckets.size() << "\n";
-
-//     dist[source] = 0;
-//     // buckets[0].push_back(source);
-
-//     // init ranges
-//     ranges[0] = {1, 1};
-//     for(int i=1; i<BUCKET_NUMBER; i++){
-//         ranges[i] = {std::pow(2, i - 1), std::pow(2, i) - 1};
-//     }
-
-//     // for(auto r : ranges){ // printing bucket ranges
-//     //     std::cout << "(" << r.first << ", " << r.second << ")\n";
-//     // }
-//     // std::cout << in_range(20, ranges.back());
-
-//     // while(true){ // we escape if last bucket is empty
-
-
-//     // }
-//     return dist;
-
-// }

@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
                 distances = g->dial(s);
             }
             else if(alg == RADIXHEAP){ // TODO: not implemented
-                distances = g->radixheap(s);
+                // distances = g->radixheap(s);
             }
 
             for(const auto& d : distances){
@@ -189,7 +189,7 @@ int main(int argc, char *argv[]){
         int max_dist = 0;
         std::vector<std::tuple<int, int, int>> dists;
 
-        for(int i=0; i<pairs.size(); i++){
+        for(int i=0; i<int(pairs.size()); i++){
             const auto& p = pairs[i];
             int u = p.first;
             int v = p.second;
@@ -205,7 +205,7 @@ int main(int argc, char *argv[]){
                 distances = g->dial(u);
             }
             else if(alg == RADIXHEAP){ // TODO: not implemented
-                distances = g->radixheap(u);
+                // distances = g->radixheap(u);
             }
 
             for(const auto& d : distances){
