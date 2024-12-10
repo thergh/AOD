@@ -205,13 +205,6 @@ void run_dist(){
 
 
 int main(){
-    // run_C_tests(5, 5);
-    // run_C_tests(4, 4);
-    // run_C_tests(3, 3);
-    // run_C_tests(2, 2);
-    // run_C_tests(1, 1);
-    // run_n_tests(11, 18);
-    // to_file_dist("results/res-a.txt", 0, 1, 2, 3, 4, 5, 6);
     // print_vector(compare_algos_dist(1, "ch9-1.1/docs/format/samples/sample-c.gr.txt"));
     // print_vector(compare_algos_dist(1, "ch9-1.1/inputs/Square-n/Square-n.10.0.gr"));
     // compare_algos_dist(1, "ch9-1.1/inputs/Square-n/Square-n.10.0.gr");
