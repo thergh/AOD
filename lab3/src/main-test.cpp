@@ -22,7 +22,9 @@ int main(){
     std::string result_path = "results/mock_res.txt";
 
     auto d_dijkstra = g->dijkstra(0);
-    auto d_radix = g->radixheap(0);
+
+    g->radix(0);
+    // auto d_radix = g->radixheap(0);
     // print_vector(d_dijkstra);
     // print_vector(d_radix);
     // print_vector(distances2);
@@ -31,3 +33,4 @@ int main(){
     // auto distances3 = g->radixheap(0);
     // print_vector(distances3);
 }
+

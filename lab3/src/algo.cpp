@@ -294,38 +294,124 @@ std::vector<int> Graph::dial(int source){
 
 
 class Radix_Heap{
-    private:
-        struct node{
-            int vertex;
-            int dist;
-        };
+private:
+    struct node{
+        int vertex;
+        int dist;
+    };
 
-        using bucket_t = std::vector<node>;
-        int size;   // number of buckets
-        std::vector<bucket_t> buckets;
-        // std::vector<int> bucket_min_dists;
-        std::vector<std::pair<int, int>> bucket_ranges;
+    using bucket_t = std::vector<node>;
+    int size;   // number of buckets
+    std::vector<bucket_t> buckets;
+    std::vector<std::pair<int, int>> ranges;
+    int current_min;
 
-    public:
-        Radix_Heap(int max_dist);
-        void insert(int vertex, int dist);
-        void extract_first();
-        const bool empty();
+    int get_bucket_index(int dist) const;
+
+public:
+    Radix_Heap(int max_dist);
+
+    void insert(int vertex, int dist);
+    std::pair<int, int> extract_first();
+    bool empty() const;
 };
 
 
-
-Radix_Heap::Radix_Heap(int size){
-    this->size = size;
-    this->buckets = std::vector<bucket_t>(size);
+Radix_Heap::Radix_Heap(int max_dist){
+    this->size = static_cast<int>(std::log2(max_dist)) + 2;
+    this->current_min = 0;
+    buckets.resize(size);
+    ranges.resize(size);
 
     // init ranges
+    ranges[0] = {0, 0};
+    for(int i=1; i<size-1; i++){
+        ranges[i] = {static_cast<int>(std::pow(2, i - 1)), static_cast<int>(std::pow(2, i)) - 1};
+    }
+    ranges[size - 1] = {static_cast<int>(std::pow(2, size - 2)), std::numeric_limits<int>::max()};
+}
 
+
+void Radix_Heap::insert(int vertex, int dist){
+    int bucket_index = get_bucket_index(dist);
+    buckets[bucket_index].push_back({vertex, dist});
+}
+
+
+std::pair<int, int> Radix_Heap::extract_first(){
+    // finding the first non-empty bucket
+    for(int i=0; i<size; i++){
+        if(!buckets[i].empty()){
+            // using iter. to calc current_min based on this bucket's min
+            auto it = std::min_element(
+                buckets[i].begin(),
+                buckets[i].end(),
+                [](const node& a, const node& b){return a.dist < b.dist;}
+            );
+
+            current_min = it->dist;
+            int vertex = it->vertex;
+            buckets[i].erase(it);
+
+            // redistribute remaining items if necessary
+            if(buckets[i].empty() && i>0){
+                for(const auto& n : buckets[i]){
+                    int new_bucket = get_bucket_index(n.dist);
+                    buckets[new_bucket].push_back(n);
+                }
+                buckets[i].clear();
+            }
+
+            return {vertex, current_min};
+        }
+    }
+    // in this case the heap is already empty
+    throw std::runtime_error("Error: Heap is empty");
+}
+
+
+
+int Radix_Heap::get_bucket_index(int dist) const {
+    for(int i = 0; i < size; i++){
+        if(dist >= ranges[i].first && dist <= ranges[i].second){
+            return i;
+        }
+    }
+    return size - 1; // Edge case for max distance
+}
+
+
+bool Radix_Heap::empty() const {
+    for(const auto& bucket : buckets){
+        if(!bucket.empty()){
+            return false;
+        }
+    }
+    return true;
 }
 
 
 
 std::vector<int> Graph::radix(int source){
+    std::vector<int> distances;
+    Radix_Heap heap = Radix_Heap(100);
+
+    heap.insert(1, 5);
+    heap.insert(2, 20);
+    heap.insert(3, 1);
+    heap.insert(4, 123);
+    heap.insert(5, 1);
+    heap.insert(6, 20);
+    heap.insert(7, 31);
+
+    
+    while(!heap.empty()){
+        auto [vertex, dist] = heap.extract_first();
+        std::cout << "v: " << vertex << ", dist: " << dist << std::endl;
+    }
+
+
+    return distances;
 }
 
 
