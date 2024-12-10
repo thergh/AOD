@@ -293,124 +293,44 @@ std::vector<int> Graph::dial(int source){
 }
 
 
+class Radix_Heap{
+    private:
+        struct node{
+            int vertex;
+            int dist;
+        };
+
+        using bucket_t = std::vector<node>;
+        int size;   // number of buckets
+        std::vector<bucket_t> buckets;
+        // std::vector<int> bucket_min_dists;
+        std::vector<std::pair<int, int>> bucket_ranges;
+
+    public:
+        Radix_Heap(int max_dist);
+        void insert(int vertex, int dist);
+        void extract_first();
+        const bool empty();
+};
 
 
 
-
-
-
-void redistribute(){
-
-}
-
-
-bool in_range(int x, std::pair<int, int> p){
-    return (x >= p.first && x <= p.second);
-}
-
-
-/**
- * Returns node id with the samllest distance in a bucket
- */
-int find_min(const std::vector<int>& bucket, const std::vector<int>& dist){
-    int min_node = -1;
-    int min_value = INT32_MAX;
-    for(const auto& v : bucket){
-        if(dist[v] < min_value){
-            min_value = dist[v];
-            min_node = v;
-        }
-    }
-    return min_node;
-}
-
-
-/**
- * Modifies the ranges
- */
-void change_range(std::vector<std::pair<int, int>>& ranges, const std::vector<std::vector<int>>& buckets,
-                const std::vector<int>& dist, int b_idx, int min_v){
-
-    // int b_start = ranges[b_idx].first;
-    int b_end = ranges[b_idx].second;
-
-    // make all previous sets empty
-    for(int i=0; i<b_idx; i++){
-        ranges[i] = {-1, -1};
-    }
-
-    for(int i=0; i<b_idx; i++){
-        int new_start = std::pow(2, i - 1) + dist[min_v];
-        int new_end = std::pow(2, i) - 1 + dist[min_v]; 
-        if(new_end > dist[min_v]){ // nodes from bucket are finished
-            if(new_start <= dist[min_v]){
-                ranges[i].second = dist[min_v];
-            }
-            break;
-        }
-        ranges[i] = {new_start, new_end};
-
-    }
-}
-
-
-std::vector<int> Graph::radixheap(int source){
-    const int SIZE = this->adjacency_list.size();
-    // const int MAX_INT = std::numeric_limits<int>::max();
-    const int MAX_DIST = this->max_weight;
-    const int K = SIZE * MAX_DIST;
-    const int BUCKET_NUMBER = log2(K); // maybe add 1?
-
-    std::vector<int> dist(SIZE);
-    std::vector<std::vector<int>> buckets(BUCKET_NUMBER); // maybe MAX_DIST + 1??
-    std::vector<std::pair<int, int>> ranges(BUCKET_NUMBER);
-    std::cout << "MAX_DIST: " << MAX_DIST << "\n";
-    std::cout << "bucket size: " << buckets.size() << "\n";
-
-    dist[source] = 0;
-    buckets[0].push_back(source);
-    // DEBUG:
-    dist[1] = 1;
-    buckets[1].push_back(1);
-    dist[2] = 3;
-    buckets[2].push_back(2);
-    dist[3] = 3;
-    buckets[2].push_back(3);
-    dist[4] = 6;
-    buckets[3].push_back(4);
-    dist[5] = 7;
-    buckets[3].push_back(5);
-    // END
+Radix_Heap::Radix_Heap(int size){
+    this->size = size;
+    this->buckets = std::vector<bucket_t>(size);
 
     // init ranges
-    ranges[0] = {0, 0};
-    for(int i=1; i<BUCKET_NUMBER; i++){
-        ranges[i] = {std::pow(2, i - 1), std::pow(2, i) - 1};
-    }
 
-    for(auto r : ranges){ // printing bucket ranges
-        std::cout << "[" << r.first << ", " << r.second << "]\n";
-    }
-    // std::cout << in_range(20, ranges.back());
-
-    // search for the first non-empty bucket
-    int b_idx = 0;
-    while(buckets[b_idx].size() == 0){
-        b_idx ++;
-    }
-    // now we are in a non-empty bucket with index b_idx
-    // if it has only one element, select it
-    if(buckets[b_idx].size() == 1){
-        std::cout << "node " << buckets[b_idx].back() << " selected from bucket " << b_idx << std::endl;
-    }
-
-    // DEBUG:
-    // std::cout << "min in 2: " << find_min(buckets[2], dist) << std::endl;
-    change_range(ranges, buckets, dist, 3, find_min(buckets[3], dist));
-    for(auto r : ranges){ // printing bucket ranges
-        std::cout << "[" << r.first << ", " << r.second << "]\n";
-    }
-    // END
-
-    return dist;
 }
+
+
+
+std::vector<int> Graph::radix(int source){
+}
+
+
+
+
+
+
+
