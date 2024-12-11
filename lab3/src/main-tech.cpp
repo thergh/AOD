@@ -136,16 +136,16 @@ std::vector<int> comp_time_rnd(std::string input_path, int iterations){
 }
 
 
-void run_dist(std::string input_path, std::string name){
+void save_dist(std::string input_path, std::string name){
     std::string output_path = "results/dist-results.txt";
-    int itr = 5;
-    auto dist_v = comp_dist(input_path, itr);
+    int source = 0;
+    auto dist_v = comp_dist(input_path, source);
     std::vector<std::string> v = {name, std::to_string(dist_v[0]), std::to_string(dist_v[1]), std::to_string(dist_v[2])};
     v_to_file(v, output_path);
 }
 
 
-void run_dist_rnd(std::string input_path, std::string name){
+void save_dist_rnd(std::string input_path, std::string name){
     std::string output_path = "results/dist-rnd-results.txt";
     int itr = 5;
     auto dist_v = comp_dist_rnd(input_path, itr);
@@ -154,11 +154,34 @@ void run_dist_rnd(std::string input_path, std::string name){
 }
 
 
+void save_time(std::string input_path, std::string name, int size){
+    std::string output_path = "results/" + name + ".txt";
+    int source = 0;
+    auto dist_v = comp_time(input_path, source);
+    std::vector<std::string> v = {std::to_string(size), std::to_string(dist_v[0]),
+                                std::to_string(dist_v[1]), std::to_string(dist_v[2])};
+    v_to_file(v, output_path);
+}
+
+
+void save_time_avg(std::string input_path, std::string name, int size){
+    std::string output_path = "results/" + name + "-rnd" + ".txt";
+    int itr = 5;
+    auto dist_v = comp_time_rnd(input_path, itr);
+    std::vector<std::string> v = {std::to_string(size), std::to_string(dist_v[0]),
+                                std::to_string(dist_v[1]), std::to_string(dist_v[2])};
+    v_to_file(v, output_path);
+}
+
+
+
 
 
 int main(){
 
     std::string input_path = "ch9-1.1/inputs/Long-n/Long-n.11.0.gr";
-    run_dist(input_path, "Long-n.11.0");
-    run_dist_rnd(input_path, "Long-n.11.0");
+    // save_dist(input_path, "Long-n.11.0");
+    // save_dist_rnd(input_path, "Long-n.11.0");
+    // save_time(input_path, "Long-n.11.0", 1);
+    save_time_avg(input_path, "Long-n.11.0", 1);
 }
