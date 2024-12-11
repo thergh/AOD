@@ -7,8 +7,6 @@
 #include "algo.hpp"
 
 
-void print_vector(std::vector<int> v);
-
 
 int main(){
     // std::string graph_file = "data/Long-C.0.0.gr";

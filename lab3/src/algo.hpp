@@ -4,6 +4,41 @@
 #include <vector>
 #include <string>
 
+
+template <typename T>
+void print_vector(const std::vector<T>& v){
+    std::cout << "[ ";
+    for(auto x : v){
+        std::cout << x << " ";
+    }
+    std::cout << "]\n";
+}
+
+
+class Radix_Heap{
+    private:
+        struct node{
+            int vertex;
+            int dist;
+        };
+
+        using bucket_t = std::vector<node>;
+        int size;   // number of buckets
+        std::vector<bucket_t> buckets;
+        std::vector<std::pair<int, int>> ranges;
+        int current_min;
+
+        int get_bucket_index(int dist) const;
+
+    public:
+        Radix_Heap(int max_dist);
+
+        void insert(int vertex, int dist);
+        std::pair<int, int> extract_first();
+    bool empty() const;
+};
+
+
 class Graph{
     public:
         /**
@@ -76,7 +111,7 @@ class Graph{
          * @return a vector of shortest path distances from source to other vertices
          */
         std::vector<int> dial(int source);
-        
+
         /**
          * @brief Finds shortest paths between source and all other nodes
          * 
@@ -87,5 +122,6 @@ class Graph{
         std::vector<int> radix(int source);
 
 };
+
 
 #endif /* SRC_ALGO_INCLUDED */

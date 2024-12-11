@@ -16,13 +16,7 @@
 #include "algo.hpp"
 
 
-void print_vector(std::vector<int> v){
-    std::cout << "[ ";
-    for(auto x : v){
-        std::cout << x << " ";
-    }
-    std::cout << "]\n";
-}
+
 
 
 
@@ -290,30 +284,6 @@ std::vector<int> Graph::dial(int source){
     }
     return dist;
 }
-
-
-class Radix_Heap{
-private:
-    struct node{
-        int vertex;
-        int dist;
-    };
-
-    using bucket_t = std::vector<node>;
-    int size;   // number of buckets
-    std::vector<bucket_t> buckets;
-    std::vector<std::pair<int, int>> ranges;
-    int current_min;
-
-    int get_bucket_index(int dist) const;
-
-public:
-    Radix_Heap(int max_dist);
-
-    void insert(int vertex, int dist);
-    std::pair<int, int> extract_first();
-    bool empty() const;
-};
 
 
 Radix_Heap::Radix_Heap(int max_dist){
