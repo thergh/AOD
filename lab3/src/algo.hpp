@@ -68,8 +68,22 @@ class Graph{
          */
         std::vector<int> dijkstra(int source);
 
+        /**
+         * @brief Finds shortest paths between source and all other nodes
+         * 
+         * Assumes that wieghts are integer, non-negative values
+         * @param source source node
+         * @return a vector of shortest path distances from source to other vertices
+         */
         std::vector<int> dial(int source);
-
+        
+        /**
+         * @brief Finds shortest paths between source and all other nodes
+         * 
+         * Assumes that wieghts are integer, non-negative values
+         * @param source source node
+         * @return a vector of shortest path distances from source to other vertices
+         */
         std::vector<int> radix(int source);
 
 };
