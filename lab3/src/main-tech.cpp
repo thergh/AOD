@@ -136,20 +136,29 @@ std::vector<int> comp_time_rnd(std::string input_path, int iterations){
 }
 
 
+void run_dist(std::string input_path, std::string name){
+    std::string output_path = "results/dist-results.txt";
+    int itr = 5;
+    auto dist_v = comp_dist(input_path, itr);
+    std::vector<std::string> v = {name, std::to_string(dist_v[0]), std::to_string(dist_v[1]), std::to_string(dist_v[2])};
+    v_to_file(v, output_path);
+}
+
+
+void run_dist_rnd(std::string input_path, std::string name){
+    std::string output_path = "results/dist-rnd-results.txt";
+    int itr = 5;
+    auto dist_v = comp_dist_rnd(input_path, itr);
+    std::vector<std::string> v = {name, std::to_string(dist_v[0]), std::to_string(dist_v[1]), std::to_string(dist_v[2])};
+    v_to_file(v, output_path);
+}
+
+
+
 
 int main(){
-    // print_vector(compare_algos_dist(1, "ch9-1.1/docs/format/samples/sample-c.gr.txt"));
-    // print_vector(compare_algos_dist(1, "ch9-1.1/inputs/Square-n/Square-n.10.0.gr"));
-    // compare_algos_dist(1, "ch9-1.1/inputs/Square-n/Square-n.10.0.gr");
-    // run_dist();
 
     std::string input_path = "ch9-1.1/inputs/Long-n/Long-n.11.0.gr";
-    // print_vector(comp_dist(input_path, 0));
-    print_vector(comp_dist_rnd(input_path, 4));
-    print_vector(comp_time_rnd(input_path, 4));
-    // print_vector(comp_time(input_path, 0));
-
-    // v_to_file(v, "teck-res.txt");
-
-    // std::cout << time << std::endl;
+    run_dist(input_path, "Long-n.11.0");
+    run_dist_rnd(input_path, "Long-n.11.0");
 }
