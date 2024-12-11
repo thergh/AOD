@@ -249,7 +249,6 @@ std::vector<int> Graph::dijkstra(int source){
 }
 
 
-
 std::vector<int> Graph::dial(int source){
     int size = this->adjacency_list.size();
     const int MAX_INT = std::numeric_limits<int>::max();
@@ -328,7 +327,7 @@ Radix_Heap::Radix_Heap(int max_dist){
     for(int i=1; i<size-1; i++){
         ranges[i] = {static_cast<int>(std::pow(2, i - 1)), static_cast<int>(std::pow(2, i)) - 1};
     }
-    ranges[size - 1] = {static_cast<int>(std::pow(2, size - 2)), std::numeric_limits<int>::max()};
+    ranges[size - 1] = {static_cast<int>(std::pow(2, size - 2)), INT32_MAX};
 }
 
 
@@ -342,6 +341,7 @@ std::pair<int, int> Radix_Heap::extract_first(){
     // finding the first non-empty bucket
     for(int i=0; i<size; i++){
         if(!buckets[i].empty()){
+
             // using iter. to calc current_min based on this bucket's min
             auto it = std::min_element(
                 buckets[i].begin(),
@@ -353,7 +353,7 @@ std::pair<int, int> Radix_Heap::extract_first(){
             int vertex = it->vertex;
             buckets[i].erase(it);
 
-            // redistribute remaining items if necessary
+            // redistributing remaining items if necessary
             if(buckets[i].empty() && i>0){
                 for(const auto& n : buckets[i]){
                     int new_bucket = get_bucket_index(n.dist);
@@ -370,14 +370,13 @@ std::pair<int, int> Radix_Heap::extract_first(){
 }
 
 
-
 int Radix_Heap::get_bucket_index(int dist) const {
     for(int i = 0; i < size; i++){
         if(dist >= ranges[i].first && dist <= ranges[i].second){
             return i;
         }
     }
-    return size - 1; // Edge case for max distance
+    return size - 1; // edge case for max distance
 }
 
 
@@ -391,26 +390,39 @@ bool Radix_Heap::empty() const {
 }
 
 
-
 std::vector<int> Graph::radix(int source){
-    std::vector<int> distances;
-    Radix_Heap heap = Radix_Heap(100);
+    const int SIZE = this->adjacency_list.size(); // vertex count
+    const int C = this->max_weight;
 
-    heap.insert(1, 5);
-    heap.insert(2, 20);
-    heap.insert(3, 1);
-    heap.insert(4, 123);
-    heap.insert(5, 1);
-    heap.insert(6, 20);
-    heap.insert(7, 31);
+    Radix_Heap heap(C);
+    std::vector<int> distances(SIZE, INT32_MAX);
+    std::vector<bool> visited(SIZE, false);
 
-    
+    // push the source node with distance 0
+    heap.insert(source, 0);
+    distances[source] = 0;
+
     while(!heap.empty()){
-        auto [vertex, dist] = heap.extract_first();
-        std::cout << "v: " << vertex << ", dist: " << dist << std::endl;
+        auto u = heap.extract_first();
+
+        if(visited[u.first]){
+            continue;
+        }
+
+        visited[u.first] = true;
+
+        for(const auto& v : adjacency_list[u.first]){
+            int v_index = v.first;
+            int v_weight = v.second;
+            int new_dist = distances[u.first] + v_weight;
+
+            // updating distance
+            if(new_dist < distances[v_index]){
+                distances[v_index] = new_dist;
+                heap.insert(v_index, distances[v_index]);
+            }
+        }
     }
-
-
     return distances;
 }
 
