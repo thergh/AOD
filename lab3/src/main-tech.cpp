@@ -218,11 +218,12 @@ void run_all_C(int start_idx, int end_idx){
     // run_time("Random4-C", start_idx, end_idx);
     // run_time_avg("Long-C", start_idx, end_idx);
     // run_time_avg("Square-C", start_idx, end_idx);
-    run_time_avg("Random4-C", start_idx, end_idx);
+    // run_time_avg("Random4-C", start_idx, end_idx);
 }
 
 
 int main(){
-    run_all_C(4, 8);
+    // run_all_C(4, 8);
     // run_all_n(10, 18);
+    run_time("Long-C", 1, 1);
 }

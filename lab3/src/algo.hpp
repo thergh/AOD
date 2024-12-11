@@ -18,23 +18,23 @@ void print_vector(const std::vector<T>& v){
 class Radix_Heap{
     private:
         struct node{
-            int vertex;
-            int dist;
+            size_t vertex;
+            size_t dist;
         };
 
         using bucket_t = std::vector<node>;
-        int size;   // number of buckets
+        size_t size;   // number of buckets
         std::vector<bucket_t> buckets;
-        std::vector<std::pair<int, int>> ranges;
-        int current_min;
+        std::vector<std::pair<size_t, size_t>> ranges;
+        size_t current_min;
 
-        int get_bucket_index(int dist) const;
+        size_t get_bucket_index(size_t dist) const;
 
     public:
-        Radix_Heap(int max_dist);
+        Radix_Heap(size_t max_dist);
 
-        void insert(int vertex, int dist);
-        std::pair<int, int> extract_first();
+        void insert(size_t vertex, size_t dist);
+        std::pair<size_t, size_t> extract_first();
     bool empty() const;
 };
 
@@ -50,76 +50,76 @@ class Graph{
         /**
          * Temp debug constructor
          */
-        Graph(int V);
+        Graph(size_t V);
         
-        int V; /* Number of vertices */
-        int E; /* Nmber of edges */
-        int max_weight; /* Highest weight of all edges */
+        size_t V; /* Number of vertices */
+        size_t E; /* Nmber of edges */
+        size_t max_weight; /* Highest weight of all edges */
 
         /**
          * Adjacency list representing a graph.
          * Edges and weights are stored in form of a pair (vertex, weight)
          */ 
-        std::vector<std::vector<std::pair<int, int>>> adjacency_list;
+        std::vector<std::vector<std::pair<size_t, size_t>>> adjacency_list;
 
         /**
          * Ads an edge to the adjacency list
          * with a weight
          */
-        void add_edge(int a, int b, int weight);
+        void add_edge(size_t a, size_t b, size_t weight);
 
         /**
-         * Neatly prints the adjacency list
+         * Neatly prsize_ts the adjacency list
          */
-        void print_graph();
+        void prsize_t_graph();
 
         /**
          * Parses a text file to create a list of nodes
          * that will be sources in the ss variant of pahfinding
          * @param ss_path path to the input file
          */
-        std::vector<int> ss_from_file(std::string ss_path);
+        std::vector<size_t> ss_from_file(std::string ss_path);
 
         /**
          * @brief Parses a text file to create a list of pairs of vertices
          * between which we will find the shortest path
          * @param p2p_path path to the input file
          */
-        std::vector<std::pair<int, int>> p2p_from_file(std::string p2p_path);
+        std::vector<std::pair<size_t, size_t>> p2p_from_file(std::string p2p_path);
 
-        void ss_result(int V, int E, std::pair<int, int> range, int avg_time,
+        void ss_result(size_t V, size_t E, std::pair<size_t, size_t> range, size_t avg_time,
                     std::string data_path, std::string ss_path, std::string result_path);
 
-        void p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dists,
-                    std::pair<int, int> range, int avg_time,
+        void p2p_result(size_t V, size_t E, std::vector<std::tuple<size_t, size_t, size_t>> dists,
+                    std::pair<size_t, size_t> range, size_t avg_time,
                     std::string data_path, std::string p2p_path, std::string result_path);
 
         /**
          * @brief Finds shortest paths between source and all other nodes
          * 
-         * Assumes that wieghts are integer, non-negative values
+         * Assumes that wieghts are size_teger, non-negative values
          * @param source source node
          * @return a vector of shortest path distances from source to other vertices
          */
-        std::vector<int> dijkstra(int source);
+        std::vector<size_t> dijkstra(size_t source);
 
         /**
          * @brief Finds shortest paths between source and all other nodes
          * 
-         * Assumes that wieghts are integer, non-negative values
+         * Assumes that wieghts are size_teger, non-negative values
          * @param source source node
          * @return a vector of shortest path distances from source to other vertices
          */
-        std::vector<int> dial(int source);
+        std::vector<size_t> dial(size_t source);
 
         /**
          * @brief Finds shortest paths between source and all other nodes
          * 
-         * Assumes that wieghts are integer, non-negative values
+         * Assumes that wieghts are size_teger, non-negative values
          * @param source source node
          * @return a vector of shortest path distances from source to other vertices
          */
-        std::vector<int> radix(int source);
+        std::vector<size_t> radix(size_t source);
 
 };
 

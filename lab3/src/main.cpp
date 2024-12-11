@@ -17,13 +17,13 @@
 
 #include "algo.hpp"
 
-void print_vector(std::vector<int> v);
+void prsize_t_vector(std::vector<size_t> v);
 
 
 /**
  * Returns 1 if there is an error in the arguments, 0 otherwise
  */
-int check_arguments(int argc, char *argv[]){
+size_t check_arguments(size_t argc, char *argv[]){
     if(argc != 8){ // Wrong number of arguments
         std::cout << "Error: Wrong number of arguments." << "\n";
         return 1;
@@ -83,7 +83,7 @@ enum Mode{
 };
 
 
-int main(int argc, char *argv[]){
+int main(size_t argc, char *argv[]){
     if(check_arguments(argc, argv)){ // Something's wrong with arguments
         return 1;
     }
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]){
         mode = P2P;
     }
 
-    const int MAX_INT = std::numeric_limits<int>::max();
+    const size_t MAX_size_t = std::numeric_limits<size_t>::max();
     
     std::string graph_path = argv[3];
     std::string source_path = argv[5];
@@ -120,18 +120,18 @@ int main(int argc, char *argv[]){
 
     if(mode == SS){
         std::cout << ">> importing sources...";
-        std::vector<int> sources = g->ss_from_file(source_path);
+        std::vector<size_t> sources = g->ss_from_file(source_path);
         std::cout << "\t| sources: ";
         print_vector(sources);
         std::cout << "# indeces of nodes are decreased by 1\n";
 
-        std::vector<int> times;
-        int min_dist = MAX_INT;
-        int max_dist = 0;
+        std::vector<size_t> times;
+        size_t min_dist = MAX_size_t;
+        size_t max_dist = 0;
 
         for(const auto& s : sources){
             std::cout << ">> calculating distance for s = " << s;
-            std::vector<int> distances;
+            std::vector<size_t> distances;
             auto start_time = std::chrono::high_resolution_clock::now();
 
             if(alg == DIJKSTRA){
@@ -155,13 +155,13 @@ int main(int argc, char *argv[]){
 
             auto end_time = std::chrono::high_resolution_clock::now();
             auto time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
-            auto time = time_diff.count() / 1000; // casting to miliseconds in int
+            auto time = time_diff.count() / 1000; // casting to miliseconds in size_t
 
             times.push_back(time);
             std::cout << "\t| finished with time: " << time << " ms"<< std::endl;
         }
 
-        int avg_time = 0;
+        size_t avg_time = 0;
         for(const auto& t : times){
             avg_time += t;
         }
@@ -174,7 +174,7 @@ int main(int argc, char *argv[]){
 
     if(mode == P2P){
         std::cout << ">> importing pairs...";
-        std::vector<std::pair<int, int>> pairs = g->p2p_from_file(source_path);
+        std::vector<std::pair<size_t, size_t>> pairs = g->p2p_from_file(source_path);
         std::cout << "\t| number of pairs: " << pairs.size() << std::endl;
         // std::cout << "[ ";
         // for(const auto& p : pairs){
@@ -184,18 +184,18 @@ int main(int argc, char *argv[]){
         
         std::cout << "# indeces of nodes are decreased by 1\n";
 
-        std::vector<int> times;
-        int min_dist = MAX_INT;
-        int max_dist = 0;
-        std::vector<std::tuple<int, int, int>> dists;
+        std::vector<size_t> times;
+        size_t min_dist = MAX_size_t;
+        size_t max_dist = 0;
+        std::vector<std::tuple<size_t, size_t, size_t>> dists;
 
-        for(int i=0; i<int(pairs.size()); i++){
+        for(size_t i=0; i<size_t(pairs.size()); i++){
             const auto& p = pairs[i];
-            int u = p.first;
-            int v = p.second;
+            size_t u = p.first;
+            size_t v = p.second;
 
             std::cout << ">> " << "[" << i + 1 << " / " << pairs.size() << "]:\t"<< "(" << u << ", " << v << ")     \t";
-            std::vector<int> distances;
+            std::vector<size_t> distances;
             auto start_time = std::chrono::high_resolution_clock::now();
 
             if(alg == DIJKSTRA){
@@ -217,18 +217,18 @@ int main(int argc, char *argv[]){
                 }
             }
 
-            int dist_u_v = distances[v];
+            size_t dist_u_v = distances[v];
             dists.push_back(std::make_tuple(u, v, dist_u_v));
 
             auto end_time = std::chrono::high_resolution_clock::now();
             auto time_diff = duration_cast<std::chrono::microseconds>(end_time - start_time);
-            auto time = time_diff.count() / 1000; // casting to miliseconds in int
+            auto time = time_diff.count() / 1000; // casting to miliseconds in size_t
 
             times.push_back(time);
             std::cout << "| distance: " << dist_u_v << "   \ttime: " << time << " ms" << std::endl;
         }
 
-        int avg_time = 0;
+        size_t avg_time = 0;
         for(const auto& t : times){
             avg_time += t;
         }

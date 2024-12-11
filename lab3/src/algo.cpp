@@ -29,7 +29,7 @@ Graph::Graph(std::string input_path){
     this->max_weight = 0;
 
     // // DEBUG
-    // this->adjacency_list = std::vector<std::vector<std::pair<int, int>>>(10);
+    // this->adjacency_list = std::vector<std::vector<std::pair<size_t, size_t>>>(10);
     
     while(std::getline(input, line)){
         // std::cout << line << "\n";
@@ -48,7 +48,7 @@ Graph::Graph(std::string input_path){
             // std::cout << "V: " << words[2] << "\n";
             this->E = stoul(words[3]);
             // std::cout << "E: " << E << "\n";
-            this->adjacency_list = std::vector<std::vector<std::pair<int, int>>>(this->V);       
+            this->adjacency_list = std::vector<std::vector<std::pair<size_t, size_t>>>(this->V);       
         }
         else if(line[0] == 'a'){
             std::vector<std::string> words;
@@ -63,8 +63,8 @@ Graph::Graph(std::string input_path){
             add_edge(stoul(words[1]) - 1, stoul(words[2]) - 1, stoul(words[3]));
 
             // calculating max weight
-            if(stoi(words[3]) > this->max_weight){
-                this->max_weight = stoi(words[3]);
+            if(static_cast<size_t>(std::stol(words[3])) > this->max_weight){
+                this->max_weight = static_cast<size_t>(std::stol(words[3]));
             }
         }
         
@@ -74,23 +74,23 @@ Graph::Graph(std::string input_path){
 
 
 
-Graph::Graph(int V){
+Graph::Graph(size_t V){
     this->V = V;
-    this->adjacency_list = std::vector<std::vector<std::pair<int, int>>>(V);
+    this->adjacency_list = std::vector<std::vector<std::pair<size_t, size_t>>>(V);
 }
 
 
-void Graph::add_edge(int a, int b, int weight){
+void Graph::add_edge(size_t a, size_t b, size_t weight){
     this->adjacency_list[a].push_back(std::make_pair(b, weight));
 }
 
 
-void Graph::print_graph(){
+void Graph::prsize_t_graph(){
     // increasing by one to make vertices start from1 instead of 0,
     // to match vector convention
-    for(int i=0; i<int(this->adjacency_list.size()); i++){
+    for(size_t i=0; i<size_t(this->adjacency_list.size()); i++){
         std::cout << i + 1 << ":\t";
-        for(int j=0; j<int(this->adjacency_list[i].size()); j++){
+        for(size_t j=0; j<size_t(this->adjacency_list[i].size()); j++){
             std::cout << "(" << adjacency_list[i][j].first + 1 << ", " << adjacency_list[i][j].second<< "), ";
         }
         std::cout << "\n";
@@ -98,8 +98,8 @@ void Graph::print_graph(){
 }
 
 
-std::vector<int> Graph::ss_from_file(std::string ss_path){
-    std::vector<int> ss_vector;
+std::vector<size_t> Graph::ss_from_file(std::string ss_path){
+    std::vector<size_t> ss_vector;
     std::ifstream input(ss_path);
     std::string line;
 
@@ -120,8 +120,8 @@ std::vector<int> Graph::ss_from_file(std::string ss_path){
 }
 
 
-std::vector<std::pair<int, int>> Graph::p2p_from_file(std::string p2p_path){
-    std::vector<std::pair<int, int>> p2p_vector(0);
+std::vector<std::pair<size_t, size_t>> Graph::p2p_from_file(std::string p2p_path){
+    std::vector<std::pair<size_t, size_t>> p2p_vector(0);
     std::ifstream input(p2p_path);
     std::string line;
 
@@ -142,7 +142,7 @@ std::vector<std::pair<int, int>> Graph::p2p_from_file(std::string p2p_path){
 }
 
 
-void Graph::ss_result(int V, int E, std::pair<int, int> range, int avg_time,
+void Graph::ss_result(size_t V, size_t E, std::pair<size_t, size_t> range, size_t avg_time,
                     std::string data_path, std::string ss_path, std::string result_path){
     std::ofstream file;
     file.open(result_path);
@@ -157,8 +157,8 @@ void Graph::ss_result(int V, int E, std::pair<int, int> range, int avg_time,
 }
 
 
-void Graph::p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dists,
-                    std::pair<int, int> range, int avg_time,
+void Graph::p2p_result(size_t V, size_t E, std::vector<std::tuple<size_t, size_t, size_t>> dists,
+                    std::pair<size_t, size_t> range, size_t avg_time,
                     std::string data_path, std::string p2p_path, std::string result_path){
     std::ofstream file;
     file.open(result_path);
@@ -180,18 +180,18 @@ void Graph::p2p_result(int V, int E, std::vector<std::tuple<int, int, int>> dist
 }
 
 
-std::vector<int> Graph::dijkstra(int source){
+std::vector<size_t> Graph::dijkstra(size_t source){
     // algorithm implemented following Cormen's pseudocode
     class Node{
     public:
-        int index; // index in adj. tree
-        int current_d; // current shortest distance
+        size_t index; // index in adj. tree
+        size_t current_d; // current shortest distance
 
-        void print_node(){
+        void prsize_t_node(){
             std::cout << "(" << index << ", " << current_d << ")" << "\n";
         }
 
-        Node(int index, int current_d){
+        Node(size_t index, size_t current_d){
             this->index = index;
             this->current_d = current_d;
         }
@@ -203,10 +203,10 @@ std::vector<int> Graph::dijkstra(int source){
         }
     };
 
-    int size = this->adjacency_list.size(); // vertex count
-    int max_int = std::numeric_limits<int>::max();
+    size_t size = this->adjacency_list.size(); // vertex count
+    size_t max_size_t = std::numeric_limits<size_t>::max();
     std::priority_queue<Node> Q; // min heap based priority queue
-    std::vector<int> distances(size, max_int); // shortest known distances to vertices
+    std::vector<size_t> distances(size, max_size_t); // shortest known distances to vertices
 
     // push the source node with distance 0
     distances[source] = 0;
@@ -224,8 +224,8 @@ std::vector<int> Graph::dijkstra(int source){
         }
 
         for(const auto& v : adjacency_list[u.index]){
-            int v_index = v.first;
-            int v_weight = v.second;
+            size_t v_index = v.first;
+            size_t v_weight = v.second;
 
             // updating distance and adding new node to Q if it's shorter
             if(distances[u.index] + v_weight < distances[v_index]){
@@ -239,18 +239,18 @@ std::vector<int> Graph::dijkstra(int source){
 }
 
 
-std::vector<int> Graph::dial(int source){
-    int size = this->adjacency_list.size();
-    const int MAX_INT = std::numeric_limits<int>::max();
-    const int MAX_DIST = this->max_weight;
-    int nodes_processed = size;
-    std::vector<int> dist(size, std::numeric_limits<int>::max());
-    std::vector<std::list<int>> buckets(MAX_DIST + 1);
+std::vector<size_t> Graph::dial(size_t source){
+    size_t size = this->adjacency_list.size();
+    const size_t MAX_size_t = std::numeric_limits<size_t>::max();
+    const size_t MAX_DIST = this->max_weight;
+    size_t nodes_processed = size;
+    std::vector<size_t> dist(size, std::numeric_limits<size_t>::max());
+    std::vector<std::list<size_t>> buckets(MAX_DIST + 1);
 
     dist[source] = 0;
     buckets[0].push_back(source);
 
-    int bucket_index = 0;
+    size_t bucket_index = 0;
     while(nodes_processed > 0){
         while(buckets[bucket_index].empty()){
             bucket_index = (bucket_index + 1) % (MAX_DIST + 1);  
@@ -258,18 +258,18 @@ std::vector<int> Graph::dial(int source){
 
         // iterate over all nodes in the current bucket
         while(!buckets[bucket_index].empty()){
-            int u = buckets[bucket_index].front();
+            size_t u = buckets[bucket_index].front();
             buckets[bucket_index].pop_front();
             nodes_processed --;
 
             // iterate over adjacent nodes
             for(const auto& edge : adjacency_list[u]){
-                int v = edge.first;
-                int v_dist = edge.second;
+                size_t v = edge.first;
+                size_t v_dist = edge.second;
 
                 // update distance
                 if(dist[u] + v_dist < dist[v]){
-                    if(dist[v] != MAX_INT){
+                    if(dist[v] != MAX_size_t){
                         buckets[dist[v] % (MAX_DIST + 1)].remove(v);
                     }
                     dist[v] = dist[u] + v_dist;
@@ -282,30 +282,30 @@ std::vector<int> Graph::dial(int source){
 }
 
 
-Radix_Heap::Radix_Heap(int max_dist){
-    this->size = static_cast<int>(std::log2(max_dist)) + 2;
+Radix_Heap::Radix_Heap(size_t max_dist){
+    this->size = static_cast<size_t>(std::log2(max_dist)) + 2;
     this->current_min = 0;
     buckets.resize(size);
     ranges.resize(size);
 
     // init ranges
     ranges[0] = {0, 0};
-    for(int i=1; i<size-1; i++){
-        ranges[i] = {static_cast<int>(std::pow(2, i - 1)), static_cast<int>(std::pow(2, i)) - 1};
+    for(size_t i=1; i<size-1; i++){
+        ranges[i] = {static_cast<size_t>(std::pow(2, i - 1)), static_cast<size_t>(std::pow(2, i)) - 1};
     }
-    ranges[size - 1] = {static_cast<int>(std::pow(2, size - 2)), INT32_MAX};
+    ranges[size - 1] = {static_cast<size_t>(std::pow(2, size - 2)), INT64_MAX};
 }
 
 
-void Radix_Heap::insert(int vertex, int dist){
-    int bucket_index = get_bucket_index(dist);
+void Radix_Heap::insert(size_t vertex, size_t dist){
+    size_t bucket_index = get_bucket_index(dist);
     buckets[bucket_index].push_back({vertex, dist});
 }
 
 
-std::pair<int, int> Radix_Heap::extract_first(){
+std::pair<size_t, size_t> Radix_Heap::extract_first(){
     // finding the first non-empty bucket
-    for(int i=0; i<size; i++){
+    for(size_t i=0; i<size; i++){
         if(!buckets[i].empty()){
 
             // using iter. to calc current_min based on this bucket's min
@@ -316,13 +316,13 @@ std::pair<int, int> Radix_Heap::extract_first(){
             );
 
             current_min = it->dist;
-            int vertex = it->vertex;
+            size_t vertex = it->vertex;
             buckets[i].erase(it);
 
             // redistributing remaining items if necessary
             if(buckets[i].empty() && i>0){
                 for(const auto& n : buckets[i]){
-                    int new_bucket = get_bucket_index(n.dist);
+                    size_t new_bucket = get_bucket_index(n.dist);
                     buckets[new_bucket].push_back(n);
                 }
                 buckets[i].clear();
@@ -336,8 +336,8 @@ std::pair<int, int> Radix_Heap::extract_first(){
 }
 
 
-int Radix_Heap::get_bucket_index(int dist) const {
-    for(int i = 0; i < size; i++){
+size_t Radix_Heap::get_bucket_index(size_t dist) const {
+    for(size_t i = 0; i < size; i++){
         if(dist >= ranges[i].first && dist <= ranges[i].second){
             return i;
         }
@@ -356,12 +356,12 @@ bool Radix_Heap::empty() const {
 }
 
 
-std::vector<int> Graph::radix(int source){
-    const int SIZE = this->adjacency_list.size(); // vertex count
-    const int C = this->max_weight;
+std::vector<size_t> Graph::radix(size_t source){
+    const size_t SIZE = this->adjacency_list.size(); // vertex count
+    const size_t C = this->max_weight;
 
     Radix_Heap heap(C);
-    std::vector<int> distances(SIZE, INT32_MAX);
+    std::vector<size_t> distances(SIZE, INT64_MAX);
     std::vector<bool> visited(SIZE, false);
 
     // push the source node with distance 0
@@ -378,9 +378,9 @@ std::vector<int> Graph::radix(int source){
         visited[u.first] = true;
 
         for(const auto& v : adjacency_list[u.first]){
-            int v_index = v.first;
-            int v_weight = v.second;
-            int new_dist = distances[u.first] + v_weight;
+            size_t v_index = v.first;
+            size_t v_weight = v.second;
+            size_t new_dist = distances[u.first] + v_weight;
 
             // updating distance
             if(new_dist < distances[v_index]){
