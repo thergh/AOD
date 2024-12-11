@@ -16,10 +16,6 @@
 #include "algo.hpp"
 
 
-
-
-
-
 Graph::Graph(std::string input_path){
     std::ifstream input(input_path);
     if(input.is_open()){

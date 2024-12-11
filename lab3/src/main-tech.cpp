@@ -174,14 +174,55 @@ void save_time_avg(std::string input_path, std::string name, int size){
 }
 
 
+void run_time(std::string name, int start_idx, int end_idx){
+    std::string dir_path = "ch9-1.1/inputs/" + name + "/";
+    std::string suffix = ".0.gr";
 
+    for(int i=start_idx; i<=end_idx; i++){
+        auto start_time = std::chrono::high_resolution_clock::now();
+        std::string input_path = dir_path + name + "." + std::to_string(i) + suffix;
+        save_time(input_path, name, i);
+        auto time = time_diff(start_time);
+        std::cout << input_path << "; time: " << time / 1000000 << " sec" << std::endl;
+    }
+}
+
+
+void run_time_avg(std::string name, int start_idx, int end_idx){
+    std::string dir_path = "ch9-1.1/inputs/" + name + "/";
+    std::string suffix = ".0.gr";
+
+    for(int i=start_idx; i<=end_idx; i++){
+        auto start_time = std::chrono::high_resolution_clock::now();
+        std::string input_path = dir_path + name + "." + std::to_string(i) + suffix;
+        save_time_avg(input_path, name, i);
+        auto time = time_diff(start_time);
+        std::cout << input_path << "; time: " << time / 1000000 << " sec" << std::endl;
+    }
+}
+
+
+void run_all_n(int start_idx, int end_idx){
+    run_time("Long-n", start_idx, end_idx);
+    run_time("Square-n", start_idx, end_idx);
+    run_time("Random4-n", start_idx, end_idx);
+    run_time_avg("Long-n", start_idx, end_idx);
+    run_time_avg("Square-n", start_idx, end_idx);
+    run_time_avg("Random4-n", start_idx, end_idx);
+}
+
+
+void run_all_C(int start_idx, int end_idx){
+    // run_time("Long-C", start_idx, end_idx);
+    // run_time("Square-C", start_idx, end_idx);
+    // run_time("Random4-C", start_idx, end_idx);
+    // run_time_avg("Long-C", start_idx, end_idx);
+    // run_time_avg("Square-C", start_idx, end_idx);
+    run_time_avg("Random4-C", start_idx, end_idx);
+}
 
 
 int main(){
-
-    std::string input_path = "ch9-1.1/inputs/Long-n/Long-n.11.0.gr";
-    // save_dist(input_path, "Long-n.11.0");
-    // save_dist_rnd(input_path, "Long-n.11.0");
-    // save_time(input_path, "Long-n.11.0", 1);
-    save_time_avg(input_path, "Long-n.11.0", 1);
+    run_all_C(4, 8);
+    // run_all_n(10, 18);
 }
