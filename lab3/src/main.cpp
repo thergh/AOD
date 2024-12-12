@@ -17,8 +17,6 @@
 
 #include "algo.hpp"
 
-void prsize_t_vector(std::vector<size_t> v);
-
 
 /**
  * Returns 1 if there is an error in the arguments, 0 otherwise
@@ -65,7 +63,6 @@ size_t check_arguments(size_t argc, char *argv[]){
     if(std::string(argv[4]) == "-p2p" && !(std::string(argv[5]).ends_with(".p2p"))){
         std::cout << "Error: File provided in argument 5 has wrong file format. Format must match argument 4: .p2p" << "\n";
     }
-
     return 0;
 }
 
@@ -83,7 +80,7 @@ enum Mode{
 };
 
 
-int main(size_t argc, char *argv[]){
+int main(int argc, char *argv[]){
     if(check_arguments(argc, argv)){ // Something's wrong with arguments
         return 1;
     }
@@ -140,8 +137,8 @@ int main(size_t argc, char *argv[]){
             else if(alg == DIAL){
                 distances = g->dial(s);
             }
-            else if(alg == RADIXHEAP){ // TODO: not implemented
-                // distances = g->radixheap(s);
+            else if(alg == RADIXHEAP){ 
+                distances = g->radix(s);
             }
 
             for(const auto& d : distances){
@@ -204,8 +201,8 @@ int main(size_t argc, char *argv[]){
             else if(alg == DIAL){
                 distances = g->dial(u);
             }
-            else if(alg == RADIXHEAP){ // TODO: not implemented
-                // distances = g->radixheap(u);
+            else if(alg == RADIXHEAP){
+                distances = g->radix(u);
             }
 
             for(const auto& d : distances){

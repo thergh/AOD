@@ -1,0 +1,7 @@
+c wyniki dla danych:
+f ch9-1.1/inputs/Long-n/Long-n.10.0.gr ch9-1.1/inputs/Long-n/Long-n.10.0.ss
+c wierzchołki: 1024, krawędzie: 3936, zakres długości: [0, 1023]
+g 1024 3936 0 1023 
+c
+c sredni czas wykonania: 0
+t 0

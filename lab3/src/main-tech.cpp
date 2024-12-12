@@ -222,8 +222,36 @@ void run_all_C(int start_idx, int end_idx){
 }
 
 
+void run_dist(){
+
+    // save_dist("ch9-1.1/inputs/Long-C/Long-C.8.0.gr", "Long-C.8.0.gr");
+    // save_dist("ch9-1.1/inputs/Square-C/Square-C.8.0.gr", "Square-C.8.0.gr");
+    // save_dist("ch9-1.1/inputs/Random4-C/Random4-C.8.0.gr", "Random4-C.8.0.gr");
+
+    // save_dist("ch9-1.1/inputs/Long-n/Long-n.18.0.gr", "Long-n.18.0.gr");
+    // save_dist("ch9-1.1/inputs/Square-n/Square-n.18.0.gr", "Square-n.18.0.gr");
+    // save_dist("ch9-1.1/inputs/Random4-n/Random4-n.18.0.gr", "Random4-n.18.0.gr");
+
+    // save_dist_rnd("ch9-1.1/inputs/Long-C/Long-C.8.0.gr", "Long-C.8.0.gr");
+    // save_dist_rnd("ch9-1.1/inputs/Square-C/Square-C.8.0.gr", "Square-C.8.0.gr");
+    // save_dist_rnd("ch9-1.1/inputs/Random4-C/Random4-C.8.0.gr", "Random4-C.8.0.gr");
+
+    // save_dist_rnd("ch9-1.1/inputs/Long-n/Long-n.18.0.gr", "Long-n.18.0.gr");
+    // save_dist_rnd("ch9-1.1/inputs/Square-n/Square-n.18.0.gr", "Square-n.18.0.gr");
+    // save_dist_rnd("ch9-1.1/inputs/Random4-n/Random4-n.18.0.gr", "Random4-n.18.0.gr");
+    
+    // save_dist("USA-inputs/USA-road-d.BAY.gr", "USA-road-d.BAY.gr");
+    // save_dist_rnd("USA-inputs/USA-road-d.BAY.gr", "USA-road-d.BAY.gr");
+}
+
 int main(){
-    // run_all_C(4, 8);
-    // run_all_n(10, 18);
-    run_time("Long-C", 1, 1);
+    // run_all_C(1, 8);
+    // // run_all_n(10, 18);
+    // // run_time("Long-C", 1, 1);
+    // run_dist();
+
+    save_dist_rnd("ch9-1.1/inputs/Random4-n/Random4-n.18.0.gr", "Random4-n.18.0.gr");
+    save_dist("ch9-1.1/inputs/Random4-C/Random4-C.8.0.gr", "Random4-C.8.0.gr");
+    save_dist_rnd("ch9-1.1/inputs/Random4-C/Random4-C.8.0.gr", "Random4-C.8.0.gr");
+    run_time_avg("Random4-C", 1, 8);
 }
