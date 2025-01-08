@@ -1,8 +1,11 @@
 #ifndef SRC_ALGO_HPP
 #define SRC_ALGO_HPP
 
+
 #include <vector>
 #include <map>
+#include <iostream>
+
 
 template <typename T>
 void print_vector(const std::vector<T>& v){
@@ -14,7 +17,6 @@ void print_vector(const std::vector<T>& v){
 }
 
 
-
 class Hypercube{
     public:
         Hypercube(int k);
@@ -23,8 +25,8 @@ class Hypercube{
         typedef std::map<std::pair<int, int>, int> m_t;
         
         int k;
-        vv_t adj_list;
-        m_t capacities;
+        std::vector<std::vector<int>> adj_list;
+        std::map<std::pair<int, int>, int> capacities;
 
         void generate_caps();
         void max_flow();
