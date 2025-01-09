@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS = -std=c++17 -Wall -Wextra -O2
+CXXFLAGS = -std=c++17
 
 SRCDIR = src
 SRC = $(SRCDIR)/main.cpp $(SRCDIR)/algo.cpp
