@@ -36,12 +36,11 @@ class Graph{
         typedef std::vector<std::vector<int>> vv_t;
         typedef std::map<std::pair<int, int>, int> m_t;
         
-        int k;
-        int n;
         std::vector<std::vector<int>> adj_list;
         std::map<std::pair<int, int>, int> capacities;
 
         void gen_hypercube(int k);
+        void gen_bipartite(int k, int i);
         int max_flow();
         void display_adj();
 

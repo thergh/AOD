@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <queue>
 #include <limits>
-
+#include <random>
+#include <chrono>
+#include <set>
 
 #include "algo.hpp"
 
@@ -14,8 +16,6 @@ Graph::Graph(){
 
 void Graph::gen_hypercube(int k){
     int n = 1 << k;
-    this->k = k;
-    this->n = n;
 
     srand (time(NULL));
 
@@ -38,10 +38,47 @@ void Graph::gen_hypercube(int k){
 }
 
 
+void Graph::gen_bipartite(int k, int i){
+    int n = 1 << k;
+    this->adj_list.resize(2 * n + 2);
+
+    int source = 0;
+    int sink = n * 2 + 1;
+
+    std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<int> dist(1, n);
+
+    for(int u=1; u<=n; u++){
+        this->adj_list[source].push_back(u);
+        this->adj_list[u].push_back(source);
+        this->capacities[{source, u}] = 1;
+
+        std::set<int> neighb;
+        while(neighb.size() < i){
+            int v = dist(rng);
+            neighb.insert(v);
+        }
+        for(int v : neighb){
+            this->adj_list[u].push_back(v + n);
+            this->adj_list[v + n].push_back(u);
+            this->capacities[{u, v + n}] = 1;
+        }
+    }
+
+    for(int v=1; v<=n; ++v){
+        this->adj_list[v + n].push_back(sink);
+        this->adj_list[sink].push_back(v + n);
+        capacities[{v + n, sink}] = 1;
+    }
+}
+
+
 void Graph::display_adj(){
     for(int i=0; i<this->adj_list.size(); i++){
-        std::cout << std::bitset<4>(i) << ": [ ";
+        // std::cout << std::bitset<4>(i) << ": [ ";
+        std::cout << i << ": [ ";
         for(int j=0; j<this->adj_list[i].size(); j++){
+            std::cout << this->adj_list[i][j] << " ";
         }
         std::cout << "]\n";
     }
@@ -51,7 +88,7 @@ void Graph::display_adj(){
 int Graph::max_flow(){
     int total_flow = 0;
     int source = 0;
-    int sink = this->n - 1;
+    int sink = this->adj_list.size() - 1;
     std::map<std::pair<int, int>, int> flows;
 
     while(true){
@@ -104,6 +141,7 @@ int Graph::max_flow(){
     }
     return total_flow;
 }
+
 
 
 
