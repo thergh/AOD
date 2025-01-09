@@ -37,11 +37,11 @@ class Hypercube{
         typedef std::map<std::pair<int, int>, int> m_t;
         
         const int k;
+        int n;
         std::vector<std::vector<int>> adj_list;
         std::map<std::pair<int, int>, int> capacities;
 
-        void generate_caps();
-        void max_flow();
+        int max_flow();
         void display_adj();
 
     private:
