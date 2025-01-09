@@ -8,8 +8,13 @@
 #include "algo.hpp"
 
 
-Hypercube::Hypercube(int k) : k(k){
+Graph::Graph(){
+}
+
+
+void Graph::gen_hypercube(int k){
     int n = 1 << k;
+    this->k = k;
     this->n = n;
 
     srand (time(NULL));
@@ -33,7 +38,7 @@ Hypercube::Hypercube(int k) : k(k){
 }
 
 
-void Hypercube::display_adj(){
+void Graph::display_adj(){
     for(int i=0; i<this->adj_list.size(); i++){
         std::cout << std::bitset<4>(i) << ": [ ";
         for(int j=0; j<this->adj_list[i].size(); j++){
@@ -43,7 +48,7 @@ void Hypercube::display_adj(){
 }
 
 
-int Hypercube::max_flow(){
+int Graph::max_flow(){
     int total_flow = 0;
     int source = 0;
     int sink = this->n - 1;

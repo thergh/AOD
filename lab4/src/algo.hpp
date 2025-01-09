@@ -29,18 +29,19 @@ void display_2dvector(const std::vector<std::vector<T>>& v){
 }
 
 
-class Hypercube{
+class Graph{
     public:
-        Hypercube(int k);
+        Graph();
 
         typedef std::vector<std::vector<int>> vv_t;
         typedef std::map<std::pair<int, int>, int> m_t;
         
-        const int k;
+        int k;
         int n;
         std::vector<std::vector<int>> adj_list;
         std::map<std::pair<int, int>, int> capacities;
 
+        void gen_hypercube(int k);
         int max_flow();
         void display_adj();
 
