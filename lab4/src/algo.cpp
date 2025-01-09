@@ -2,6 +2,7 @@
 #include <bitset>
 #include <algorithm>
 #include <queue>
+#include <limits>
 
 
 #include "algo.hpp"
@@ -47,31 +48,56 @@ int Hypercube::max_flow(){
     int source = 0;
     int sink = this->n - 1;
     std::map<std::pair<int, int>, int> flows;
-    
-    // BFS
-    std::vector<int> parents(this->adj_list.size(), -1);
-    std::queue<int> q;
-    q.push(source);
-    parents[source] = source;
 
-    while(!q.empty() && parents[sink] == -1){
-        int curr = q.front();
-        q.pop();
+    while(true){
+        // BFS
+        std::vector<int> parents(this->adj_list.size(), -1);
+        std::queue<int> q;
+        q.push(source);
+        parents[source] = source;
 
-        for(int neighb : this->adj_list[curr]){
-            int residual = this->capacities[{curr, neighb}] - flows[{curr, neighb}];
-            if(residual > 0 && parents[neighb] == -1){
-                parents[neighb] = curr;
-                q.push(neighb);
-                if(neighb == sink){
-                    break;
+        while(!q.empty() && parents[sink] == -1){
+            int curr = q.front();
+            q.pop();
+
+            for(int neighb : this->adj_list[curr]){
+                int residual = this->capacities[{curr, neighb}] - flows[{curr, neighb}];
+                if(residual > 0 && parents[neighb] == -1){
+                    parents[neighb] = curr;
+                    q.push(neighb);
+                    if(neighb == sink){
+                        break;
+                    }
                 }
             }
         }
+
+        if(parents[sink] == -1){
+            break;
+        }
+
+        // find bottleneck flow
+        int bottleneck = std::numeric_limits<int>::max();
+        int v = sink;
+        while(v != source){
+            int u = parents[v];
+            bottleneck = std::min(bottleneck, capacities[{u, v}] - flows[{u, v}]);
+            v = parents[v];
+        }
+
+        // update flow
+        v = sink;
+        while(v != source){
+            int u = parents[v];
+            flows[{u, v}] += bottleneck;
+            flows[{v, u}] -= bottleneck;
+            v = parents[v];
+        }
+
+        total_flow += bottleneck;
+
     }
-
-
-    return 1;
+    return total_flow;
 }
 
 
