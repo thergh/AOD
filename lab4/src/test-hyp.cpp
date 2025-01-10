@@ -6,9 +6,9 @@
 
 int main(int argc, char* argv[]){
     std::string output_path = "output/hyp.out";
-    int start_k = 1;
-    int end_k = 12; 
-    int reps = 5;
+    int start_k = 15;
+    int end_k = 16; 
+    int reps = 2;
     
     std::cout << "TESTING HYPERCUBE; " << "reps: " << reps << std::endl;
 
