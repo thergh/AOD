@@ -6,9 +6,9 @@
 
 int main(int argc, char* argv[]){
     std::string output_path = "output/hyp.out";
-    int start_k = 13;
-    int end_k = 16; 
-    int reps = 2;
+    int start_k = 1;
+    int end_k = 12; 
+    int reps = 5;
     
     std::cout << "TESTING HYPERCUBE; " << "reps: " << reps << std::endl;
 
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
         }
         std::ofstream outfile;
         outfile.open(output_path, std::ios_base::app);
-        outfile << x << " " << time_sum/reps << " " << paths_sum/reps << std::endl;
+        outfile << x << " " << max_flow_sum/reps << " " << time_sum/reps << " " << paths_sum/reps << std::endl;
 
         std::cout << time_sum / 1000 << " sec" << std::endl;
     }
