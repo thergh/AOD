@@ -162,3 +162,12 @@ void Graph::display_flow(){
     }
 }
 
+
+void Graph::display_matching(){
+    for(auto& x : this->final_flow){
+        if(x.second== 1){
+            std::cout << "(" << x.first.first << ", " << x.first.second << ") ";
+        }
+    }
+}
+

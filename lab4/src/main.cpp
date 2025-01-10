@@ -6,10 +6,10 @@
 int main(int argc, char* argv[]){
 
     int k = 4;
-    int i = 4;
+    int i = 2;
     Graph* cube = new Graph();
     cube->gen_hypercube(k);
-    // cube->gen_bipartite(k, i);
+    cube->gen_bipartite(k, i);
     // cube->display_adj();
     int flow = cube->max_flow();
     cube->display_flow();

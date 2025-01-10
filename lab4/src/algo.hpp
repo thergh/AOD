@@ -47,6 +47,7 @@ class Graph{
         int max_flow();
         void display_adj();
         void display_flow();
+        void display_matching();
 
     private:
         m_t flow;
