@@ -38,6 +38,8 @@ class Graph{
         
         std::vector<std::vector<int>> adj_list;
         std::map<std::pair<int, int>, int> capacities;
+        int alg_time = 0; // miliseconds
+        int path_count = 0;
 
         void gen_hypercube(int k);
         void gen_bipartite(int k, int i);

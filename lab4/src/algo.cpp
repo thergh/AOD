@@ -7,6 +7,7 @@
 #include <chrono>
 #include <set>
 
+
 #include "algo.hpp"
 
 
@@ -48,13 +49,13 @@ void Graph::gen_bipartite(int k, int i){
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<int> dist(1, n);
 
-    for(int u=1; u<=n; u++){
+        for(int u=1; u<=n; u++){
         this->adj_list[source].push_back(u);
         this->adj_list[u].push_back(source);
         this->capacities[{source, u}] = 1;
 
         std::set<int> neighb;
-        while(neighb.size() < i){
+        while(neighb.size() < i && neighb.size()<n){
             int v = dist(rng);
             neighb.insert(v);
         }
@@ -90,6 +91,11 @@ int Graph::max_flow(){
     int source = 0;
     int sink = this->adj_list.size() - 1;
     std::map<std::pair<int, int>, int> flows;
+
+    this->alg_time = 0;
+    this->path_count = 0;
+
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
     while(true){
         // BFS
@@ -137,8 +143,14 @@ int Graph::max_flow(){
         }
 
         total_flow += bottleneck;
+        this->path_count ++;
 
     }
+
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    auto time_diff_ms = std::chrono::duration_cast<std::chrono::milliseconds> (end - begin).count();
+    this->alg_time = time_diff_ms;
+
     return total_flow;
 }
 

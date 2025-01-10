@@ -22,7 +22,7 @@ int main(int argc, char* argv[]){
         for(int j=0; j<reps; j++){
             Graph* cube = new Graph();
             cube->gen_hypercube(x);
-            max_flow_sum + cube->max_flow();
+            max_flow_sum += cube->max_flow();
             time_sum += cube->alg_time;
             paths_sum += cube->path_count;
         }
