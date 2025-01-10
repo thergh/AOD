@@ -150,10 +150,15 @@ int Graph::max_flow(){
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     auto time_diff_ms = std::chrono::duration_cast<std::chrono::milliseconds> (end - begin).count();
     this->alg_time = time_diff_ms;
+    this->final_flow = flows;
 
     return total_flow;
 }
 
 
-
+void Graph::display_flow(){
+    for(auto& x : this->final_flow){
+        std::cout << "(" << x.first.first << ", " << x.first.second << "): " << x.second << std::endl;
+    }
+}
 

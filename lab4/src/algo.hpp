@@ -40,11 +40,13 @@ class Graph{
         std::map<std::pair<int, int>, int> capacities;
         int alg_time = 0; // miliseconds
         int path_count = 0;
+        std::map<std::pair<int, int>, int> final_flow;
 
         void gen_hypercube(int k);
         void gen_bipartite(int k, int i);
         int max_flow();
         void display_adj();
+        void display_flow();
 
     private:
         m_t flow;
