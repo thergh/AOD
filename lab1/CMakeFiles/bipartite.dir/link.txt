@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/bipartite.dir/src/bipartite.cpp.o CMakeFiles/bipartite.dir/src/graph_alg.cpp.o -o bipartite 

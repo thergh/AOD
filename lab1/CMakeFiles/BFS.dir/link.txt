@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/BFS.dir/src/BFS.cpp.o CMakeFiles/BFS.dir/src/graph_alg.cpp.o -o BFS 
