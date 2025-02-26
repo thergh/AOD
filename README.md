@@ -1,4 +1,4 @@
-### Algorithms for descrete optimisation
+### Algorithms for discrete optimisation
 
 ### Lab1
 Implementation of common graph algorithms: BFS, DFS, checking if a graph is bipartite, finding strongly connected components of a graph, topologically sorting a graph.
